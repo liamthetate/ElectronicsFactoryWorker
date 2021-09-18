@@ -96,6 +96,7 @@ scene('game',({ level, score }) => {
 
 		add([sprite('bg'), layer('bkg')])
 
+		// SCORE 
 		const scoreLabel = add([
 			text('0'),
 			layer('ui'),
@@ -124,20 +125,19 @@ scene('game',({ level, score }) => {
 			scoreLabel.pos = player.pos.add(player.dir.scale(-48)) //tracks/sticks to player
 		  })
 		
-		//PLAYER DIES WHEN...
-		player.overlaps('dangerous', () => {
-			go('lose', {score: scoreLabel.value})
-		})
+		// //PLAYER DIES WHEN...
+		// player.overlaps('dangerous', () => {
+		// 	go('lose', {score: scoreLabel.value})
+		// })
 
-		player.overlaps('next-level', () => {
-			go('game', {
-				level: (level + 1) % maps.length,
-				score: scoreLabel.value,
-			})
-		})
+		// player.overlaps('next-level', () => {
+		// 	go('game', {
+		// 		level: (level + 1) % maps.length,
+		// 		score: scoreLabel.value,
+		// 	})
+		// })
 
 		//WIDGET
-	
 		const WIDGET_SPEED = 30
 
 		// PLAYER PICKS UP WIDGET
@@ -153,6 +153,8 @@ scene('game',({ level, score }) => {
 			destroy(w)
 			scoreLabel.value++
 			scoreLabel.text = scoreLabel.value
+			dailyTarget.value--
+			dailyTarget.text = dailyTarget.value
 		})
 
 		//WIDGET SPAWNER
@@ -179,6 +181,8 @@ scene('game',({ level, score }) => {
 			const message = add([text('FAIL!'), pos(300, 350), scale(5)])
 			scoreLabel.value--
 			scoreLabel.text = scoreLabel.value
+			dailyTarget.value++
+			dailyTarget.text = dailyTarget.value
 			wait(1, ()=> {
 				destroy(message)
 			})
@@ -224,41 +228,41 @@ scene('game',({ level, score }) => {
 			spawnKaboom(player.pos.add(player.dir.scale(48)))
 		})
 
-		//ENEMY
-		const ENEMY_SPEED = 120
-		action('slicer', (s) => {
-			s.move(s.dir * ENEMY_SPEED, 0)
-		})
+		// //ENEMY
+		// const ENEMY_SPEED = 120
+		// action('slicer', (s) => {
+		// 	s.move(s.dir * ENEMY_SPEED, 0)
+		// })
 
-		collides('slicer', 'wall', (s) => {
-			s.dir = -s.dir
-		})
+		// collides('slicer', 'wall', (s) => {
+		// 	s.dir = -s.dir
+		// })
 
-		action('skeletor', (s) => {
-			s.move(0, s.dir * ENEMY_SPEED)
-			s.timer -= dt()
-			if (s.timer <= 0){
-				s.dir = -s.dir
-				s.timer = rand(5)
-			}
-		})
+		// action('skeletor', (s) => {
+		// 	s.move(0, s.dir * ENEMY_SPEED)
+		// 	s.timer -= dt()
+		// 	if (s.timer <= 0){
+		// 		s.dir = -s.dir
+		// 		s.timer = rand(5)
+		// 	}
+		// })
 
-		collides('skeletor', 'wall', (s) => {
-			s.dir = -s.dir
-		})
+		// collides('skeletor', 'wall', (s) => {
+		// 	s.dir = -s.dir
+		// })
 
-		collides('kaboom', 'skeletor', (k,s) => {
-			camShake(4)
-			wait(1, () => {
-				destroy(k)
-			})
-			destroy(s)
-			scoreLabel.value++
-			scoreLabel.text = scoreLabel.value
-		})
+		// collides('kaboom', 'skeletor', (k,s) => {
+		// 	camShake(4)
+		// 	wait(1, () => {
+		// 		destroy(k)
+		// 	})
+		// 	destroy(s)
+		// 	scoreLabel.value++
+		// 	scoreLabel.text = scoreLabel.value
+		// })
 
 
-		
+		// WORKER INTERACTION
 		const workerMessage = [
 			['I am so happy'],
 			['Work is good!'],
@@ -291,27 +295,52 @@ scene('game',({ level, score }) => {
 			])
 		})
 
-		//SHIFT TIME
+
+
+		//UI
+
+		// DAILY GOAL
 		add([
-			text('SHIFT ENDS:'),
-			pos(300, 10),
+			text('DAILY GOAL:'),
+			pos(20, 10),
 			scale(1),
 		])
-		const TIME_LEFT = 5
+
+		const dailyTarget = add([
+			text('1600'),
+			layer('ui'),
+			pos(20,25),
+			{
+				value: 1600
+			},
+			scale(2),
+		])
+
+		
+
+		//SHIFT TIME
+		const TIME_LEFT = 43200
+
+		add([
+			text('SHIFT ENDS:'),
+			pos(380, 10),
+			scale(1),
+		])
+
 		const timer = add([
 			text('0'),
-			pos(300, 20),
+			pos(380, 25),
 			scale(2),
 			layer('ui'),
 			{
-			time: TIME_LEFT,
+				time: TIME_LEFT
 			},
 		])
 		
 		/* calls on the timer const, then drills into it */
 		timer.action(() => { /* action is called every frame */
 			timer.time -= dt() /* delta time since last frame */
-			timer.text = timer.time.toFixed(2)
+			timer.text = timer.time.toFixed(0)
 			if (timer.time <= 0) {
 				go('bedtime', {score: score.value}) /*go to lose scene and take score with you*/
 			}
