@@ -33,46 +33,38 @@ loadSprite('top-door', '21.png')
 loadSprite('stairs', '19.png')
 loadSprite('bottom-door', '7.png')
 loadSprite('kaboom', '9.png')
-
-
-// k.scene('main', () =>{
-// 	k.add([
-// 		k.text('hello cunt', 32),
-// 		k.pos(k.width() * 0.5, k.height() *0.5),
-// 		k.color(1,1,1,1),
-// 		k.origin('center'),
-// 	])
-// })
-// k.start('main')
+loadSprite('widget', '20.png')
+loadSprite('worker', '12a.png')
+loadSprite('hole', '8.png')
 
 scene('game',({ level, score }) => {
 
-		layers(['bkg','obj','ui'], 'obj')
+		layers(['bkg','obj', 'top', 'ui'], 'obj')
 
 		const maps = [
 			[
-				'y)ccc^cc)w',
+				'yccc  cccw',
+				'a p    p b',
+				'a___  ___b',
+				'a p    p b',
+				'a___  ___b',
+				'a p    p b',
+				'a___  ___b',
 				'a        b',
-				'a    }   b',
-				'a        b',
-				'%        $',
-				'a        b',
-				'a    *   b',
-				'a        b',
-				'a(      (b',
-				'xdddd_dddz',
+				'(________)',
+				'xddddddddz',
 			],
 
 			[
-				'yccccccccw',
-				'a) }    )b',
+				'yccc  cccw',
+				'a p    p b',
+				'a__o  o__b',
+				'a p    p b',
+				'a__o  o__b',
+				'a p    p b',
+				'a__o  o__b',
 				'a        b',
-				'a        b',
-				'a    $   b',
-				'a        b',
-				'a        b',
-				'a        b',
-				'a(      (b',
+				'(________)',
 				'xddddddddz',
 			],
 		]
@@ -93,11 +85,11 @@ scene('game',({ level, score }) => {
 			'$' : [sprite('stairs'), 'next-level'],
 			'*' : [sprite('slicer'), 'slicer', 'dangerous', {dir: -1}], //{} = direction
 			'}' : [sprite('skeletor'), 'skeletor', 'dangerous', {dir: -1, timer: -1}],
-			')' : [sprite('lanterns'), 'wall', solid()],
-			'(' : [sprite('firepot'), solid()],
-			'_' : [sprite('bottom-door'), 'next-level', 'wall'],
-
-
+			')' : [sprite('lanterns'), 'wall', 'not-done', solid()],
+			'(' : [sprite('firepot'), solid(), layer('ui')],
+			'_' : [sprite('bottom-door'), solid(), 'wall'],
+			'p' : [sprite('worker'), solid(), 'worker'],
+			'o' : [sprite('hole'), solid(), 'hole']
 		}
 
 		addLevel(maps[level], levelCfg)
@@ -117,7 +109,7 @@ scene('game',({ level, score }) => {
 		//PLAYER
 		const player = add([
 			sprite('link-going-right'),
-			pos(5,190),
+			pos(200,200),
 			{
 				dir: vec2(1,0)
 			}
@@ -127,6 +119,11 @@ scene('game',({ level, score }) => {
 			player.resolve() //stops player walking through solid shit
 		})
 
+		//UI ABOVE HEAD!
+		player.action(() => {
+			scoreLabel.pos = player.pos.add(player.dir.scale(-48)) //tracks/sticks to player
+		  })
+		
 		//PLAYER DIES WHEN...
 		player.overlaps('dangerous', () => {
 			go('lose', {score: scoreLabel.value})
@@ -139,8 +136,59 @@ scene('game',({ level, score }) => {
 			})
 		})
 
+		//WIDGET
+	
+		const WIDGET_SPEED = 30
+
+		// PLAYER PICKS UP WIDGET
+		collides('hole', 'kaboom', (k) => {
+			scoreLabel.text = 'got widget'
+		})
+
+		// PLAYER SUCCESSFULLY FITS COMPONANT
+		collides('kaboom', 'widget', (k,w) => {
+			wait(1, () => {
+				destroy(k)
+			})
+			destroy(w)
+			scoreLabel.value++
+			scoreLabel.text = scoreLabel.value
+		})
+
+		//WIDGET SPAWNER
+		function spawnWidgets () {
+			const obj = add([sprite('widget'), pos(0,385), 'widget'])
+			obj.action( () => {
+				obj.move(WIDGET_SPEED,0)
+			})
+			wait(23, () => {
+				destroy(obj)
+			})
+		}
+
+		wait(1, () => {
+			loop(3, () => {
+				spawnWidgets()
+			})
+		})
+
+		// BAD WORKER!
+		collides('widget', 'not-done', (w) => {
+			camShake(10)
+			destroy(w)
+			const message = add([text('FAIL!'), pos(300, 350), scale(5)])
+			scoreLabel.value--
+			scoreLabel.text = scoreLabel.value
+			wait(1, ()=> {
+				destroy(message)
+			})
+		})
+
+	
+	
+
 		//CONTROLS
-		const PLAYER_SPEED = 200
+		const PLAYER_SPEED = 100 //200
 		keyDown('left', () => {
 			player.changeSprite('link-going-left')
 			player.move(-PLAYER_SPEED,0)
@@ -167,7 +215,7 @@ scene('game',({ level, score }) => {
 
 		function spawnKaboom (p) {
 			const obj = add([sprite('kaboom'), pos(p), 'kaboom'])
-			wait(1, () => {
+			wait(0.3, () => {
 				destroy(obj)
 			})
 		}
@@ -210,9 +258,27 @@ scene('game',({ level, score }) => {
 		})
 
 
-		// mouse click destroyrs things with the tag dangerous
-		clicks('dangerous', (s) => {
-			destroy(s)
+		
+		const workerMessage = [
+			['I am so happy'],
+			['Work is good!'],
+			['Only 1679 to go!'],
+			['zzZ'],
+			['Unionise? LOL JOKES!'],
+			['Get back to work :)'],
+			['Best time ever!'],
+		]
+
+		// mouse click destroyrs things with the tags
+		clicks('worker', () => {
+			const conversation = add([
+				text(workerMessage[parseInt(rand(6))]),
+				scale(2),
+				pos(mousePos()),
+			])
+			wait(2, () => {
+				destroy(conversation)
+			})
 		})
 
 		// end screen
@@ -224,6 +290,34 @@ scene('game',({ level, score }) => {
 				scale(10)
 			])
 		})
+
+		//SHIFT TIME
+		add([
+			text('SHIFT ENDS:'),
+			pos(300, 10),
+			scale(1),
+		])
+		const TIME_LEFT = 5
+		const timer = add([
+			text('0'),
+			pos(300, 20),
+			scale(2),
+			layer('ui'),
+			{
+			time: TIME_LEFT,
+			},
+		])
+		
+		/* calls on the timer const, then drills into it */
+		timer.action(() => { /* action is called every frame */
+			timer.time -= dt() /* delta time since last frame */
+			timer.text = timer.time.toFixed(2)
+			if (timer.time <= 0) {
+				go('bedtime', {score: score.value}) /*go to lose scene and take score with you*/
+			}
+		})
+
+		
 
 })
 
