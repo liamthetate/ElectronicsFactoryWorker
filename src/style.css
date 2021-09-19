@@ -1,0 +1,19 @@
+/* ------------------------------------- global settings */
+* {
+	margin: 0;
+	padding: 0;
+}
+html {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+	/* background-position: center;
+	background-size: cover;
+	background-attachment: fixed;
+	position: relative; */
+}
+
+.game {
+    display: flex;
+    align-items: center;
+}
