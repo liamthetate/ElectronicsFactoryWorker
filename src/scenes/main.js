@@ -4,7 +4,7 @@ import { Actions, GameObjects } from 'phaser'
 
 const k = kaboom({
 	global: true,
-	//fullscreen: true,
+	// fullscreen: false,
 	scale: 1,
 	debug: true,
 	clearColor: [0,0,0,1],
@@ -52,25 +52,38 @@ loadSprite('hole', '8.png')
 
 scene('start', () => {
   
-	add([
+	const title = add([
 	  text('ELECTRONICS FACTORY WORKER!'),
 	  origin('center'),
 	  pos(width() / 2, height() /2),
 	  scale(1.8),
 	])
+
+	title.action(() => {
+		title.scale = wave(2, 1, time());
+		title.angle = time() * 60;	
+	})
   
-	add([
+	const pressSpace = add([
 	  text('press space to begin'),
 	  origin('center'),
 	  pos(width() / 2, 380),
 	  scale(1),
 	])
+
+	pressSpace.action(()=> {
+		const t = time() * 100;
+		pressSpace.color = rgb(
+			wave(10, 255, t),
+			wave(0, 255, t + 2),
+			wave(0, 255, t + 4),
+	)})
   
 	keyPress('space', () => {
 	  go('game', { level: 0, score: 0 })
 	})
-  
-  });
+
+});
 
 /* ---------------- GAME SCENE ---------------- */
 
@@ -141,6 +154,7 @@ scene('game',({ level, score, target, time }) => {
 		const player = add([
 			sprite('link-going-down'),
 			pos(225,200), ///pos(225,70),
+			scale(0.9),
 			{
 				dir: vec2(0,1)
 			}
@@ -326,6 +340,7 @@ scene('game',({ level, score, target, time }) => {
 			sprite('guard'),
 			pos(80,220),
 			origin('center'),
+			layer('obj'),
 		])
 
 		//stops guard walking through solid shit
@@ -334,7 +349,7 @@ scene('game',({ level, score, target, time }) => {
 		})
 
 		guard.action( () => {
-			wait(7, () => {
+			wait(20, () => {
 				guard.move(0,10)
 			})
 		})
@@ -492,7 +507,7 @@ scene('game',({ level, score, target, time }) => {
 
 		/* ----------------------- TIOLET SCENE! ------------------- */
 
-		
+
 
 
 
