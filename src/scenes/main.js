@@ -1,6 +1,6 @@
 // @ts-nocheck
 import kaboom from 'kaboom'
-import { Actions } from 'phaser'
+import { Actions, GameObjects } from 'phaser'
 
 const k = kaboom({
 	global: true,
@@ -11,6 +11,13 @@ const k = kaboom({
 	width: 480,
   	height: 480,
 })
+
+/* ---------------- CONSTANTS ---------------- */
+
+const PLAYER_SPEED = 100 //200
+const ACTUAL_TIME_LEFT = 43200
+
+/* ---------------- LOADING ASSETS ---------------- */
 
 loadRoot('sprites/Zelda/')
 loadSprite('top-wall', '24.png')
@@ -31,6 +38,7 @@ loadSprite('slicer', '18.png')
 loadSprite('left-door', '4.png')
 loadSprite('bg', '5.png')
 loadSprite('skeletor', '17.png')
+loadSprite('guard', '17a.png')
 loadSprite('top-door', '21.png')
 loadSprite('stairs', '19.png')
 loadSprite('bottom-door', '7.png')
@@ -40,12 +48,39 @@ loadSprite('worker', '12a.png')
 loadSprite('worker-up', '16a.png')
 loadSprite('hole', '8.png')
 
-scene('game',({ level, score }) => {
+/* ---------------- START SCENE ---------------- */
 
-		layers(['bkg','obj', 'top', 'ui'], 'obj')
+scene('start', () => {
+  
+	add([
+	  text('ELECTRONICS FACTORY WORKER!'),
+	  origin('center'),
+	  pos(width() / 2, height() /2),
+	  scale(1.8),
+	])
+  
+	add([
+	  text('press space to begin'),
+	  origin('center'),
+	  pos(width() / 2, 380),
+	  scale(1),
+	])
+  
+	keyPress('space', () => {
+	  go('game', { level: 0, score: 0 })
+	})
+  
+  });
+
+/* ---------------- GAME SCENE ---------------- */
+
+// scene('game',( args = { level, score, target, time }) => {
+scene('game',({ level, score, target, time }) => {
+
+	layers(['bkg','obj', 'top', 'ui'], 'obj')
 
 		const maps = [
-			[//simulator mode
+			[//0 (simulator mode)
 				'yccccccccw',
 				')________(',
 				'aqqqqqqqqb',
@@ -58,48 +93,16 @@ scene('game',({ level, score }) => {
 				'xddddddddz',
 			],
 
-			[//simulator mode
-				'yccc  cccw',
+			[//1 (hallway)
+				'yccccccccw',
+				'a        b',
+				'a        b',
+				'ycccc cccw',
+				'a        $',
+				'xdddd dddz',
 				'a        b',
 				'a        b',
 				'a        b',
-				'a        b',
-				'a        b',
-				'a        b',
-				'apppp pppb',
-				'(________)',
-				'xddddddddz',
-			],
-
-			[//simulator mode
-				'yccc  cccw',
-				'a p    p b',
-				'a__    __b',
-				'a p    p b',
-				'a__    __b',
-				'a p    p b',
-				'a__    __b',
-				'appp  pppb',
-				'(________)',
-				'xddddddddz',
-			],
-
-			[//fun mode
-				'yccc  cccw',
-				'a p    p b',
-				'a__o  o__b',
-				'a p    p b',
-				'a__o  o__b',
-				'a p    p b',
-				'a__o  o__b',
-				'a        b',
-				'(________)',
-				'xddddddddz',
-			],
-
-			[//hallway
-				'ycccc^cccw',
-				'a         ',
 				'xddddddddz',
 			],
 		]
@@ -115,9 +118,9 @@ scene('game',({ level, score }) => {
 			'x' : [sprite('bottom-left-wall'), 'wall', solid()],
 			'y' : [sprite('top-left-wall'), 'wall', solid()],
 			'z' : [sprite('bottom-right-wall'), 'wall', solid()],
-			'%' : [sprite('left-door', 'hallway')],
+			'%' : [sprite('left-door'), 'hall'],
 			'^' : [sprite('top-door'), 'wall', 'next-level'],
-			'$' : [sprite('stairs'), 'next-level'],
+			'$' : [sprite('stairs'), 'first-level'],
 			'*' : [sprite('slicer'), 'slicer', 'dangerous', {dir: -1}], //{} = direction
 			'}' : [sprite('skeletor'), solid(), 'skeletor', 'dangerous', {dir: -1, timer: -1}],
 			')' : [sprite('lanterns'), 'wall', 'not-done', solid()],
@@ -126,24 +129,15 @@ scene('game',({ level, score }) => {
 			'p' : [sprite('worker'), solid(), 'worker'],
 			'q' : [sprite('worker-up'), solid(), 'worker'],
 			'o' : [sprite('hole'), solid(), 'hole'],
+			'g' : [sprite('guard'), solid(), 'guard'],
 		}
 
 		addLevel(maps[level], levelCfg)
+		// const theLevels = addLevel(maps[0], levelCfg)
 
 		add([sprite('bg'), layer('bkg')])
 
-		// SCORE 
-		const scoreLabel = add([
-			text('0'),
-			layer('ui'),
-			pos(500,10),
-			{
-				value: score,
-			},
-			scale(4)
-		])
-
-		//PLAYER
+		/* ---------------- PLAYER ---------------- */
 		const player = add([
 			sprite('link-going-down'),
 			pos(225,200), ///pos(225,70),
@@ -153,130 +147,10 @@ scene('game',({ level, score }) => {
 			
 		])
 
+		//stops player walking through solid shit
 		player.action(()=> {
-			player.resolve() //stops player walking through solid shit
+			player.resolve() 
 		})
-
-		//UI ABOVE HEAD!
-		player.action(() => {
-			scoreLabel.pos = player.pos.add(player.dir.scale(-48)) //tracks/sticks to player
-		  })
-		
-		// //PLAYER DIES WHEN...
-		// player.overlaps('dangerous', () => {
-		// 	go('lose', {score: scoreLabel.value})
-		// })
-
-		// player.overlaps('next-level', () => {
-		// 	go('game', {
-		// 		level: (level + 1) % maps.length,
-		// 		score: scoreLabel.value,
-		// 	})
-		// })
-
-
-		// if (WIDGET_SPEED < 60) {
-		// 	GAP_BETWEEN_WIDGETS = 1
-		// }
-
-		// else if (WIDGET_SPEED < 90) {
-		// 	GAP_BETWEEN_WIDGETS = 0.9
-		// }
-
-		// else if (WIDGET_SPEED < 120) {
-		// 	GAP_BETWEEN_WIDGETS = 0.6
-		// }
-
-		// else if (WIDGET_SPEED < 150) {
-		// 	GAP_BETWEEN_WIDGETS = 0.4
-		// }
-
-		// else if (WIDGET_SPEED < 210) {
-		// 	GAP_BETWEEN_WIDGETS = 0.3
-		// } 
-		
-		// else if (WIDGET_SPEED < 300) {
-		// 	GAP_BETWEEN_WIDGETS = 0.3
-		// } 
-
-		//WIDGET
-		let WIDGET_SPEED = 35
-		let GAP_BETWEEN_WIDGETS = 2
-		
-		//SPEEDS UP
-		collides('kaboom', 'skeletor', (k) => {
-			camShake(1)
-			wait(1, () => {
-				destroy(k)
-			})
-			WIDGET_SPEED += 30
-			GAP_BETWEEN_WIDGETS -= 0.3
-			if (GAP_BETWEEN_WIDGETS < 0.1) {
-				GAP_BETWEEN_WIDGETS = 0.1
-			}
-			theMachineLoop()			
-		})
-
-		//SLOWS DOWN
-		collides('kaboom', 'slicer', (k) => {
-			camShake(1)
-			wait(1, () => {
-				destroy(k)
-			})
-			WIDGET_SPEED -= 30
-			// if (WIDGET_SPEED < 30) {
-			// 	WIDGET_SPEED = 30
-			// }
-			GAP_BETWEEN_WIDGETS += 0.3
-			// if (GAP_BETWEEN_WIDGETS > 2) {
-			// 	GAP_BETWEEN_WIDGETS = 2
-			// }
-		})
-
-
-		//WIDGET SPAWNER
-		function spawnWidgets () {
-			const obj = add([sprite('widget'), pos(0,385), 'widget'])
-			obj.action( () => {
-				obj.move(WIDGET_SPEED,0)
-			})
-			// wait(23, () => {
-			// 	destroy(obj)
-			// })
-		}
-
-		// gaps
-		function theMachineLoop () {
-			wait(1, ()=> {
-				loop(GAP_BETWEEN_WIDGETS, () => { //n = gap between widgets
-				spawnWidgets()
-				npcSpawnWidgets() // NPC
-				})
-			})
-	 	}
-
-		theMachineLoop()
-		
-
-		//NPC WIDGET SPAWNER
-		function npcSpawnWidgets () {
-			const obj = add([sprite('hole'), pos(450,48), 'hole'])
-			obj.action( () => {
-				obj.move(-WIDGET_SPEED,0)
-			})
-			// wait(23, () => {
-			// 	destroy(obj)
-			// })
-		}
-
-		
-
-
-
-		// // PLAYER PICKS UP WIDGET
-		// collides('firepot', 'kaboom', (k) => {
-		// 	scoreLabel.text = 'got widget'
-		// })
 
 		// PLAYER SUCCESSFULLY FITS COMPONANT
 		collides('kaboom', 'widget', (k,w) => {
@@ -291,43 +165,77 @@ scene('game',({ level, score }) => {
 			dailyTarget.value--
 			dailyTarget.text = dailyTarget.value
 
-			// show new graphic for fitting widget
+			// show new replacement graphic for fitting widget
 			const obj = add([sprite('hole'), pos(240,384), 'hole'])
 			obj.action( () => {
-				obj.move(WIDGET_SPEED,0)
+				obj.move(widgetSpeed,0)
 			})
 			wait(10, () => {
 				destroy(obj)
 			})
 		})
 
-		
-		
-		
+		/* ---------------- UI ---------------- */
 
-		// MISSED ONE - BAD WORKER!
-		collides('widget', 'not-done', (w) => {
-			camShake(10)
-			destroy(w)
-			const message = add([text('FAIL!'), pos(270, 390), scale(5)])
-			scoreLabel.value--
-			scoreLabel.text = scoreLabel.value
-			dailyTarget.value++
-			dailyTarget.text = dailyTarget.value
-			wait(1, ()=> {
-				destroy(message)
-			})
+		//SCORE 
+		const scoreLabel = add([
+			text('0'),
+			layer('ui'),
+			pos(500,10),
+			{
+				value: score,
+			},
+			scale(4)
+		])
+
+		//SCORE ABOVE HEAD!
+		player.action(() => {
+			scoreLabel.pos = player.pos.add(player.dir.scale(-48)) //tracks/sticks to player
+		  })
+		
+		// DAILY GOAL
+		add([
+			text('DAILY GOAL:'),
+			pos(20, 10),
+			scale(1),
+		])
+
+		const dailyTarget = add([
+			text('1600'),
+			layer('ui'),
+			pos(20,25),
+			{
+				value: 1600
+			},
+			scale(2),
+		])
+
+		//SHIFT TIME
+		add([
+			text('SHIFT ENDS:'),
+			pos(380, 10),
+			scale(1),
+		])
+
+		const actualTime = add([
+			text('0'),
+			pos(380, 25),
+			scale(2),
+			layer('ui'),
+			{
+				time: ACTUAL_TIME_LEFT,
+			},
+		])
+		
+		actualTime.action(() => { /* action is called every frame */
+			actualTime.time -= dt() /* delta time since last frame */
+			const totalSeconds = actualTime.time
+			actualTime.text = totalSeconds.toFixed(0)
 		})
 
-		collides('hole', 'not-done', (h) => {
-			destroy(h)
-		})
 
-	
-	
+		/* ---------------- CONTROLS ---------------- */
 
-		//CONTROLS
-		const PLAYER_SPEED = 100 //200
 		keyDown('left', () => {
 			player.changeSprite('link-going-left')
 			player.move(-PLAYER_SPEED,0)
@@ -363,7 +271,8 @@ scene('game',({ level, score }) => {
 			spawnKaboom(player.pos.add(player.dir.scale(48)))
 		})
 
-		// WORKER INTERACTION
+		/* ---------------- WORKER INTERACTION ---------------- */
+		
 		const workerMessage = [
 			['I am so happy'], //0
 			['Work = meaning'], //1
@@ -398,8 +307,6 @@ scene('game',({ level, score }) => {
 			})
 		})
 
-
-
 		// // space bar = conversations
 		// collides('kaboom', 'worker', (k) => {
 		// 	destroy(k)
@@ -415,186 +322,247 @@ scene('game',({ level, score }) => {
 			
 		// })
 
-		// mouse click = conversations
-		clicks('widget', () => {
-			spawnKaboom(player.pos.add(player.dir.scale(48)))
+		const guard = add([
+			sprite('guard'),
+			pos(80,220),
+			origin('center'),
+		])
+
+		//stops guard walking through solid shit
+		guard.action(()=> {
+			guard.resolve() 
+		})
+
+		guard.action( () => {
+			wait(7, () => {
+				guard.move(0,10)
+			})
+		})
+
+		collides('guard', 'worker', (s) => {
+			guard.move(0,-10)
+		})
+		
+		/* ---------------- WIDGETS ---------------- */
+		let widgetSpeed = 35
+		let gapBetweenWidgets = 2
+		
+				//WIDGET SPAWNER
+		function spawnWidgets () {
+			const obj = add([sprite('widget'), pos(0,385), 'widget'])
+			obj.action( () => {
+				obj.move(widgetSpeed,0)
+			})
+			// wait(23, () => {
+			// 	destroy(obj)
+			// })
+		}
+
+		// gaps between widgets
+		function theMachineLoop () {
+			wait(1, ()=> {
+				loop(gapBetweenWidgets, () => { //n = gap between widgets
+				spawnWidgets()
+				npcSpawnWidgets() // NPC
+				})
+			})
+	 	}
+
+		if (level == 0) {
+			theMachineLoop() // starts the machines
+		}
+		
+		/* ----------------------- CHEATS! INTERACTIONS ------------------- */
+
+		 //SPEEDS UP MACHINE WITH INTERACTION
+		collides('kaboom', 'skeletor', (k) => {
+			camShake(1)
+			wait(1, () => {
+				destroy(k)
+			})
+			widgetSpeed += 30
+			gapBetweenWidgets -= 0.3
+			if (gapBetweenWidgets < 0.1) {
+				gapBetweenWidgets = 0.1
+			}
+			theMachineLoop()			
+		})
+
+		//SLOWS DOWN MACHINE WITH INTERACTION
+		collides('kaboom', 'slicer', (k) => {
+			camShake(1)
+			wait(1, () => {
+				destroy(k)
+			})
+			widgetSpeed -= 30
+			// if (WIDGET_SPEED < 30) {
+			// 	WIDGET_SPEED = 30
+			// }
+			gapBetweenWidgets += 0.3
+			// if (GAP_BETWEEN_WIDGETS > 2) {
+			// 	GAP_BETWEEN_WIDGETS = 2
+			// }
+		})
+
+		/* ----------------------- CHEATS! KEYS ------------------- */
+
+		 //SPEEDS UP MACHINE WITH KEYS
+		 keyPress('=', () => {
+			camShake(2)
+			widgetSpeed += 30
+			gapBetweenWidgets -= 0.3
+			if (gapBetweenWidgets < 0.1) {
+				gapBetweenWidgets = 0.1
+			}
+			theMachineLoop()			
+		})
+
+		//SLOWS DOWN MACHINE WITH INTERACTION
+		keyPress('-', () => {
+			camShake(4)
+			widgetSpeed -= 30
+			// if (WIDGET_SPEED < 30) {
+			// 	WIDGET_SPEED = 30
+			// }
+			gapBetweenWidgets += 0.3
+			// if (GAP_BETWEEN_WIDGETS > 2) {
+			// 	GAP_BETWEEN_WIDGETS = 2
+			// }
 		})
 
 
 
-/
 
+		//NPC WIDGET SPAWNER
+		function npcSpawnWidgets () {
+			const obj = add([sprite('hole'), pos(450,48), 'hole'])
+			obj.action( () => {
+				obj.move(-widgetSpeed,0)
+			})
+			// wait(23, () => {
+			// 	destroy(obj)
+			// })
+		}
 
-		// //ENEMY
-		// const ENEMY_SPEED = 120
-		// action('slicer', (s) => {
-		// 	s.move(s.dir * ENEMY_SPEED, 0)
+		// // PLAYER PICKS UP WIDGET
+		// collides('firepot', 'kaboom', (k) => {
+		// 	scoreLabel.text = 'got widget'
 		// })
+	
+		// MISSED A WIDGET!
+		collides('widget', 'not-done', (w) => {
+			camShake(10)
+			destroy(w)
+			const message = add([text('FAIL!'), pos(270, 390), scale(5)])
+			scoreLabel.value--
+			scoreLabel.text = scoreLabel.value
+			dailyTarget.value++
+			dailyTarget.text = dailyTarget.value
+			wait(1, ()=> {
+				destroy(message)
+			})
+		})
 
-		// collides('slicer', 'wall', (s) => {
-		// 	s.dir = -s.dir
-		// })
-
-		// action('skeletor', (s) => {
-		// 	s.move(0, s.dir * ENEMY_SPEED)
-		// 	s.timer -= dt()
-		// 	if (s.timer <= 0){
-		// 		s.dir = -s.dir
-		// 		s.timer = rand(5)
-		// 	}
-		// })
-
-		// collides('skeletor', 'wall', (s) => {
-		// 	s.dir = -s.dir
-		// })
-
-		// collides('kaboom', 'skeletor', (k,s) => {
-		// 	camShake(4)
-		// 	wait(1, () => {
-		// 		destroy(k)
-		// 	})
-		// 	destroy(s)
-		// 	scoreLabel.value++
-		// 	scoreLabel.text = scoreLabel.value
-		// })
-
-
-		
-
-
-
-
-
-		//UI
-
-		// DAILY GOAL
-		add([
-			text('DAILY GOAL:'),
-			pos(20, 10),
-			scale(1),
-		])
-
-		const dailyTarget = add([
-			text('1600'),
-			layer('ui'),
-			pos(20,25),
-			{
-				value: 1600
-			},
-			scale(2),
-		])
-
-		
-
-		
-		// const TIME_LEFT = 43200
-
-		// add([
-		// 	text('SHIFT ENDS:'),
-		// 	pos(380, 10),
-		// 	scale(1),
-		// ])
-
-		// const timer = add([
-		// 	text('0'),
-		// 	pos(380, 25),
-		// 	scale(2),
-		// 	layer('ui'),
-		// 	{
-		// 		time: TIME_LEFT
-		// 	},
-		// ])
-		
-		// /* calls on the timer const, then drills into it */
-		// timer.action(() => { /* action is called every frame */
-		// 	timer.time -= dt() /* delta time since last frame */
-		// 	timer.text = timer.time.toFixed(0)
-		// 	if (timer.time <= 0) {
-		// 		go('bedtime', {score: score.value}) /*go to lose scene and take score with you*/
-		// 	}
-		// })
-
-
-		//SHIFT TIME
-		const ACTUAL_TIME_LEFT = 43200
-
-		add([
-			text('SHIFT ENDS:'),
-			pos(380, 10),
-			scale(1),
-		])
-
-		const actualTime = add([
-			text('0'),
-			pos(380, 25),
-			scale(2),
-			layer('ui'),
-			{
-				time: ACTUAL_TIME_LEFT,
-			},
-		])
-		
-		/* calls on the timer const, then drills into it */
-		actualTime.action(() => { /* action is called every frame */
-			actualTime.time -= dt() /* delta time since last frame */
-			const totalSeconds = actualTime.time
-			actualTime.text = totalSeconds.toFixed(0)
+		// CLEANS UP WIDGETS THAT ARE DONE
+		collides('hole', 'not-done', (h) => {
+			destroy(h)
 		})
 
 
+		/* ----------------------- TIOLET! ------------------- */
+
+
+		player.overlaps('hall', () => {
+			go('game', {
+				level: (level + 1), //% maps.length,
+				score: scoreLabel.value,
+				target: dailyTarget.value,
+				time: actualTime.time,
+			})
+		})
+
+		player.overlaps('first-level', () => {
+			go('game', {
+				level: (level - 1), //% maps.length,
+				score: scoreLabel.value,
+				target: dailyTarget.value,
+				time: actualTime.time,
+			})
+		})
+
+		/* ----------------------- TIOLET SCENE! ------------------- */
 
 		
+
+
+
+		/* ----------------------- CONGRATS! ------------------- */
 		
-		//3600secs in an hour
-		
-		// const hourTimer = add([
-		// 	text('0'),
-		// 	pos(380, 75),
-		// 	scale(2),
-		// 	layer('ui'),
-		// ])
+		player.action( () => {
+			if (scoreLabel.value > 1600) {
+				const congrats = add([
+					text('CONGRATULATIONS!'),
+					pos(250, 200),
+					origin('center'),
+					scale(3),
+					layer('ui'),
+				])
 
-		// const minTimer = add([
-		// 	text('0'),
-		// 	pos(420, 75),
-		// 	scale(2),
-		// 	layer('ui'),
-		// ])
+				const keepGoing = add([
+					text('You are a good employee'),
+					pos(250, 230),
+					origin('center'),
+					scale(1),
+					layer('ui'),
+				])
 
-		// const secTimer = add([
-		// 	text('0'),
-		// 	pos(460, 75),
-		// 	scale(2),
-		// 	layer('ui'),
-		// ])
+				wait(3, () => {
+					destroy(congrats)
+					destroy(keepGoing)
+				})
+			}
+			
+		})
 
-		// hourTimer.action(() => { 
-		// 	let sec_value = ACTUAL_TIME_LEFT % (24 * 3600)
-		// 	let hour_value = sec_value / 3600
-		// 	sec_value %= 3600
-		// 	let min_value = sec_value / 60
-		// 	sec_value %= 60
-		// 	hourTimer.text = hour_value
-		// 	minTimer.text = min_value
+		/* ----------------------- END OF SHIFT ------------------- */
 
-		// 	sec_value += dt()
-		// 	secTimer.text = sec_value.toFixed(0)
-		// })
+		player.action( () => {
+			if (actualTime.time < 0.0) {
+				go('bedtime')
+				// add([
+				// 	text('well done'),
+				// 	pos(250, 230),
+				// 	origin('center'),
+				// 	scale(3),
+				// 	layer('ui'),
+				// ])	
+			}	
+		})
 
+		/* ----------------------- BEDTIME SCENE ------------------- */
 
-
-		// end screen
-		scene('lose', ({score}) => {
+		scene('bedtime', () => {
+  
 			add([
-				text(score),
-				pos(width() /2, height() /2),
-				origin('center'),
-				scale(10)
+			  text('Bedtime!'),
+			  origin('center'),
+			  pos(width() / 2, height() /2),
+			  scale(5),
 			])
-		})
-
+		  
+			add([
+			  text('press space to go again'),
+			  origin('center'),
+			  pos(width() / 2, 380),
+			  scale(2),
+			])
+		  
+			keyPress('space', () => {
+			  go('game', { level: 0, score: 0 })
+			})
+		
+		  });		
 	})
 
 
-
-	start('game', { level: 0, score: 0 })
+start('start', { level: 0, score: 0 })
