@@ -12,14 +12,16 @@ const k = kaboom({
   	height: 480,
 })
 
-/* ---------------- CONSTANTS ---------------- */
+/* ---------------- FUNDAMENTAL VALUES ---------------- */
 
 const PLAYER_SPEED = 100 //200
-const ACTUAL_TIME_LEFT = 43200
+const ACTUAL_TIME_LEFT = 43200 //43200
+let widgetSpeed = 25
+let gapBetweenWidgets = 3
 
 /* ---------------- LOADING ASSETS ---------------- */
 
-loadRoot('sprites/Zelda/')
+loadRoot('sprites/') 
 loadSprite('top-wall', '24.png')
 loadSprite('link-going-left', '14.png')
 loadSprite('link-going-right', '15.png')
@@ -30,10 +32,10 @@ loadSprite('right-wall', '26.png')
 loadSprite('bottom-wall', '2.png')
 loadSprite('bottom-right-wall', '1.png')
 loadSprite('bottom-left-wall', '3.png')
-loadSprite('top-right-wall', '23.jpg')
+loadSprite('top-right-wall', '23.png')
 loadSprite('top-left-wall', '22.png')
-loadSprite('firepot', '6.png')
-loadSprite('lanterns', '10.png')
+loadSprite('firepot', '6.png') //6
+loadSprite('lanterns', '10.png') //10
 loadSprite('slicer', '18.png')
 loadSprite('left-door', '4.png')
 loadSprite('bg', '5.png')
@@ -44,16 +46,43 @@ loadSprite('stairs', '19.png')
 loadSprite('bottom-door', '7.png')
 loadSprite('kaboom', '9.png')
 loadSprite('widget', '20.png')
-loadSprite('worker', '12a.png')
-loadSprite('worker-up', '16a.png')
-loadSprite('hole', '8.png')
+loadSprite('worker', '12.png')
+loadSprite('worker-up', '16.png')
+loadSprite('cleaned', '8.png')
+
+loadRoot('sounds/') 
+loadSound("title", "title.mp3");
+loadSound("game", "game1.mp3");
+loadSound("bedtime", "bedtime.mp3");
 
 /* ---------------- START SCENE ---------------- */
 
 scene('start', () => {
+
+	let titleMusic = play("title", {
+		volume: 1,
+		loop: true,
+		speed: 1,
+		detune: 0,
+	})
+
+	// keyPress("=", () => music.detune(music.detune() + 100))
+	// keyPress("-", () => music.detune(music.detune() - 100))
+
+	keyPress("=", () => {
+		titleMusic.speed(titleMusic.speed() + 0.05)
+		//music.detune(music.detune() + 50)
+	})
+
+	keyPress("-", () => {
+		titleMusic.speed(titleMusic.speed() - 0.05)
+		//music.detune(music.detune() - 50)
+	})
+
+	layers(['bkg','top'], 'top')
   
 	const title = add([
-	  text('ELECTRONICS FACTORY WORKER!'),
+	  text('- ELECTRONICS FACTORY WORKER +'),
 	  origin('center'),
 	  pos(width() / 2, height() /2),
 	  scale(1.8),
@@ -81,7 +110,27 @@ scene('start', () => {
   
 	keyPress('space', () => {
 	  go('game', { level: 0, score: 0 })
+	  titleMusic.stop();
 	})
+
+	mouseDown( () => {
+		go('game', { level: 0, score: 0 })
+		titleMusic.stop();
+	  })
+
+	// const bgColor = add([
+	// 	rect(1000,1000),
+	// 	origin('center'),
+	// 	color(255, 0, 0),
+	// 	layer('bkg'),
+	// ])
+
+	// bgColor.action( () => {
+	// 	bgColor.color = rgb(
+	// 		wave(0, 255, time() *1000 ),
+	// 		wave(0, 255, (time() *1000) + 1),
+	// 		wave(0, 255, (time() *1000) + 2),
+	// )})
 
 });
 
@@ -118,6 +167,7 @@ scene('game',({ level, score, target, time }) => {
 				'a        b',
 				'xddddddddz',
 			],
+			
 		]
 
 		const levelCfg = {
@@ -141,14 +191,22 @@ scene('game',({ level, score, target, time }) => {
 			'_' : [sprite('bottom-door'), solid(), 'wall'],
 			'p' : [sprite('worker'), solid(), 'worker'],
 			'q' : [sprite('worker-up'), solid(), 'worker'],
-			'o' : [sprite('hole'), solid(), 'hole'],
+			'o' : [sprite('cleaned'), solid(), 'cleaned'],
 			'g' : [sprite('guard'), solid(), 'guard'],
+			'k' : [sprite('kaboom'), 'kaboom', layer['top']],
 		}
 
 		addLevel(maps[level], levelCfg)
 		// const theLevels = addLevel(maps[0], levelCfg)
 
 		add([sprite('bg'), layer('bkg')])
+
+		let music = play("game", {
+			volume: 1,
+			loop: true,
+			speed: 1,
+			detune: 0,
+		})
 
 		/* ---------------- PLAYER ---------------- */
 		const player = add([
@@ -168,11 +226,12 @@ scene('game',({ level, score, target, time }) => {
 
 		// PLAYER SUCCESSFULLY FITS COMPONANT
 		collides('kaboom', 'widget', (k,w) => {
-			wait(1, () => {
-				destroy(k)
-			})
 			destroy(w)
-
+			destroy(k)
+			// wait(1, () => {
+			// 	destroy(k)
+			// })
+			
 			//update score & target
 			scoreLabel.value++
 			scoreLabel.text = scoreLabel.value
@@ -180,7 +239,12 @@ scene('game',({ level, score, target, time }) => {
 			dailyTarget.text = dailyTarget.value
 
 			// show new replacement graphic for fitting widget
-			const obj = add([sprite('hole'), pos(240,384), 'hole'])
+			const obj = add([sprite('cleaned'), pos(240,384), 'cleaned'])
+			const overlay = add([sprite('kaboom'), pos(240,384), 'kaboom'])
+			wait(0.3, () => {
+				destroy(overlay)
+			})
+
 			obj.action( () => {
 				obj.move(widgetSpeed,0)
 			})
@@ -275,7 +339,7 @@ scene('game',({ level, score, target, time }) => {
 		})
 
 		function spawnKaboom (p) {
-			const obj = add([sprite('kaboom'), pos(p), 'kaboom'])
+			const obj = add([sprite('kaboom'), pos(p), 'kaboom', scale(0.8)])
 			wait(0.3, () => {
 				destroy(obj)
 			})
@@ -349,7 +413,7 @@ scene('game',({ level, score, target, time }) => {
 		})
 
 		guard.action( () => {
-			wait(20, () => {
+			wait(60, () => {
 				guard.move(0,10)
 			})
 		})
@@ -359,8 +423,7 @@ scene('game',({ level, score, target, time }) => {
 		})
 		
 		/* ---------------- WIDGETS ---------------- */
-		let widgetSpeed = 35
-		let gapBetweenWidgets = 2
+		
 		
 				//WIDGET SPAWNER
 		function spawnWidgets () {
@@ -397,10 +460,13 @@ scene('game',({ level, score, target, time }) => {
 			})
 			widgetSpeed += 30
 			gapBetweenWidgets -= 0.3
+			music.speed(music.speed() + 0.05)
+			
 			if (gapBetweenWidgets < 0.1) {
 				gapBetweenWidgets = 0.1
 			}
-			theMachineLoop()			
+			theMachineLoop()
+						
 		})
 
 		//SLOWS DOWN MACHINE WITH INTERACTION
@@ -410,13 +476,8 @@ scene('game',({ level, score, target, time }) => {
 				destroy(k)
 			})
 			widgetSpeed -= 30
-			// if (WIDGET_SPEED < 30) {
-			// 	WIDGET_SPEED = 30
-			// }
 			gapBetweenWidgets += 0.3
-			// if (GAP_BETWEEN_WIDGETS > 2) {
-			// 	GAP_BETWEEN_WIDGETS = 2
-			// }
+			music.speed(music.speed() - 0.05)
 		})
 
 		/* ----------------------- CHEATS! KEYS ------------------- */
@@ -429,7 +490,8 @@ scene('game',({ level, score, target, time }) => {
 			if (gapBetweenWidgets < 0.1) {
 				gapBetweenWidgets = 0.1
 			}
-			theMachineLoop()			
+			theMachineLoop()		
+			music.speed(music.speed() + 0.05)
 		})
 
 		//SLOWS DOWN MACHINE WITH INTERACTION
@@ -443,6 +505,7 @@ scene('game',({ level, score, target, time }) => {
 			// if (GAP_BETWEEN_WIDGETS > 2) {
 			// 	GAP_BETWEEN_WIDGETS = 2
 			// }
+			music.speed(music.speed() - 0.05)	
 		})
 
 
@@ -450,7 +513,7 @@ scene('game',({ level, score, target, time }) => {
 
 		//NPC WIDGET SPAWNER
 		function npcSpawnWidgets () {
-			const obj = add([sprite('hole'), pos(450,48), 'hole'])
+			const obj = add([sprite('cleaned'), pos(450,48), 'cleaned'])
 			obj.action( () => {
 				obj.move(-widgetSpeed,0)
 			})
@@ -479,13 +542,12 @@ scene('game',({ level, score, target, time }) => {
 		})
 
 		// CLEANS UP WIDGETS THAT ARE DONE
-		collides('hole', 'not-done', (h) => {
+		collides('cleaned', 'not-done', (h) => {
 			destroy(h)
 		})
 
 
 		/* ----------------------- TIOLET! ------------------- */
-
 
 		player.overlaps('hall', () => {
 			go('game', {
@@ -493,6 +555,7 @@ scene('game',({ level, score, target, time }) => {
 				score: scoreLabel.value,
 				target: dailyTarget.value,
 				time: actualTime.time,
+				
 			})
 		})
 
@@ -551,13 +614,20 @@ scene('game',({ level, score, target, time }) => {
 				// 	scale(3),
 				// 	layer('ui'),
 				// ])	
-			}	
+				music.stop()
+			}
 		})
 
 		/* ----------------------- BEDTIME SCENE ------------------- */
 
 		scene('bedtime', () => {
-  
+			
+			const bedMusic = play("bedtime", {
+				volume: 1,
+				loop: false,
+			})
+
+
 			add([
 			  text('Bedtime!'),
 			  origin('center'),
@@ -574,6 +644,7 @@ scene('game',({ level, score, target, time }) => {
 		  
 			keyPress('space', () => {
 			  go('game', { level: 0, score: 0 })
+			  bedMusic.stop()
 			})
 		
 		  });		
