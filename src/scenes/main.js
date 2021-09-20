@@ -50,10 +50,18 @@ loadSprite('worker', '12.png')
 loadSprite('worker-up', '16.png')
 loadSprite('cleaned', '8.png')
 
+//MUSIC
 loadRoot('sounds/') 
 loadSound("title", "title.mp3");
-loadSound("game", "game1.mp3");
+loadSound("game1", "game1.mp3");
+loadSound("game2", "game2.mp3");
+loadSound("game3", "game3.mp3");
 loadSound("bedtime", "bedtime.mp3");
+
+//SFX
+loadSound("up", "up.wav");
+loadSound("spray", "spray.wav");
+loadSound("fail", "fail.wav");
 
 /* ---------------- START SCENE ---------------- */
 
@@ -84,14 +92,22 @@ scene('start', () => {
 	const title = add([
 	  text('- ELECTRONICS FACTORY WORKER +'),
 	  origin('center'),
-	  pos(width() / 2, height() /2),
+	  pos(width() / 2, 215),
 	  scale(1.8),
 	])
 
-	title.action(() => {
-		title.scale = wave(2, 1, time());
-		title.angle = time() * 60;	
+	const sim = add([
+		text('SIMULATOR!'),
+		origin('center'),
+		pos(width() / 2, 250),
+		scale(4),
+	  ])
+
+	sim.action(() => {
+		sim.scale = wave(5, 1, time());
+		sim.angle = time() * 60;	
 	})
+
   
 	const pressSpace = add([
 	  text('press space to begin'),
@@ -201,7 +217,11 @@ scene('game',({ level, score, target, time }) => {
 
 		add([sprite('bg'), layer('bkg')])
 
-		let music = play("game", {
+		
+		const musicTracks = [["game1"], ["game2"], ["game3"]]
+		const randomMusicTrack = musicTracks[parseInt(rand(3))]
+
+		let music = play(randomMusicTrack, {
 			volume: 1,
 			loop: true,
 			speed: 1,
@@ -228,6 +248,7 @@ scene('game',({ level, score, target, time }) => {
 		collides('kaboom', 'widget', (k,w) => {
 			destroy(w)
 			destroy(k)
+			
 			// wait(1, () => {
 			// 	destroy(k)
 			// })
@@ -250,6 +271,10 @@ scene('game',({ level, score, target, time }) => {
 			})
 			wait(10, () => {
 				destroy(obj)
+			})
+
+			wait(0.2, () => {
+				play("up")
 			})
 		})
 
@@ -347,6 +372,9 @@ scene('game',({ level, score, target, time }) => {
 
 		keyPress('space', () => {
 			spawnKaboom(player.pos.add(player.dir.scale(48)))
+			play("spray", () => {
+				volume(0.5)
+			})
 		})
 
 		/* ---------------- WORKER INTERACTION ---------------- */
@@ -539,6 +567,9 @@ scene('game',({ level, score, target, time }) => {
 			wait(1, ()=> {
 				destroy(message)
 			})
+			play("fail", () => {
+				volume(0.1)
+			})
 		})
 
 		// CLEANS UP WIDGETS THAT ARE DONE
@@ -590,7 +621,7 @@ scene('game',({ level, score, target, time }) => {
 					text('You are a good employee'),
 					pos(250, 230),
 					origin('center'),
-					scale(1),
+					scale(1.5),
 					layer('ui'),
 				])
 

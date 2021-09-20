@@ -13,7 +13,11 @@ html {
 	position: relative; */
 }
 
-/* .game {
+.game {
     display: flex;
     align-items: center;
-} */
+}
+
+.instructions {
+	display: inline;
+}
