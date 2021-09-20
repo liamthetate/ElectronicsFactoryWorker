@@ -19,6 +19,8 @@ const ACTUAL_TIME_LEFT = 43200 //43200
 let widgetSpeed = 25
 let gapBetweenWidgets = 3
 
+
+
 /* ---------------- LOADING ASSETS ---------------- */
 
 loadRoot('sprites/') 
@@ -34,20 +36,25 @@ loadSprite('bottom-right-wall', '1.png')
 loadSprite('bottom-left-wall', '3.png')
 loadSprite('top-right-wall', '23.png')
 loadSprite('top-left-wall', '22.png')
-loadSprite('firepot', '6.png') //6
-loadSprite('lanterns', '10.png') //10
-loadSprite('slicer', '18.png')
 loadSprite('left-door', '4.png')
-loadSprite('bg', '5.png')
-loadSprite('skeletor', '17.png')
+loadSprite('floor', '5.png')
+loadSprite('conveyor-belt', '7.png')
+// loadSprite('conveyor-belt-top', '7alt.png')
+
+loadSprite('open-belt', '6.png') 
+loadSprite('close-belt', '10.png')
+loadSprite('open-belt-inv', '6i.png') 
+loadSprite('close-belt-inv', '10i.png')
+
+loadSprite('slow', '18.png')
+loadSprite('fast', '17.png')
+
 loadSprite('guard', '17a.png')
-loadSprite('top-door', '21.png')
-loadSprite('stairs', '19.png')
-loadSprite('bottom-door', '7.png')
-loadSprite('kaboom', '9.png')
-loadSprite('widget', '20.png')
+loadSprite('spray', '9.png')
 loadSprite('worker', '12.png')
 loadSprite('worker-up', '16.png')
+
+loadSprite('widget', '20.png')
 loadSprite('cleaned', '8.png')
 
 //MUSIC
@@ -62,6 +69,7 @@ loadSound("bedtime", "bedtime.mp3");
 loadSound("up", "up.wav");
 loadSound("spray", "spray.wav");
 loadSound("fail", "fail.wav");
+loadSound("bell", "bell.mp3");
 
 /* ---------------- START SCENE ---------------- */
 
@@ -155,34 +163,51 @@ scene('start', () => {
 // scene('game',( args = { level, score, target, time }) => {
 scene('game',({ level, score, target, time }) => {
 
+	wait(1, () => {
+		play("bell")
+	})
+
 	layers(['bkg','obj', 'top', 'ui'], 'obj')
 
 		const maps = [
 			[//0 (simulator mode)
 				'yccccccccw',
-				')________(',
+				'[________]',
 				'aqqqqqqqqb',
 				'a        b',
-				'%        }',
-				'a        *',
+				'%        b',
+				'%        b',
 				'a        b',
 				'apppp pppb',
 				'(________)',
 				'xddddddddz',
 			],
 
-			[//1 (hallway)
-				'yccccccccw',
-				'a        b',
-				'a        b',
-				'ycccc cccw',
-				'a        $',
-				'xdddd dddz',
-				'a        b',
-				'a        b',
-				'a        b',
-				'xddddddddz',
-			],
+			// [//0 (simulator mode)
+			// 	'yccccccccw',
+			// 	')________(',
+			// 	'aqqqqqqqqb',
+			// 	'a        b',
+			// 	'%        }',
+			// 	'%        *',
+			// 	'a        b',
+			// 	'apppp pppb',
+			// 	'(________)',
+			// 	'xddddddddz',
+			// ],
+
+			// [//1 (hallway)
+			// 	'yccccccccw',
+			// 	'a        b',
+			// 	'a        b',
+			// 	'ycccc cccw',
+			// 	'a        $',
+			// 	'xdddd dddz',
+			// 	'a        b',
+			// 	'a        b',
+			// 	'a        b',
+			// 	'xddddddddz',
+			// ],
 			
 		]
 
@@ -197,25 +222,27 @@ scene('game',({ level, score, target, time }) => {
 			'x' : [sprite('bottom-left-wall'), 'wall', solid()],
 			'y' : [sprite('top-left-wall'), 'wall', solid()],
 			'z' : [sprite('bottom-right-wall'), 'wall', solid()],
-			'%' : [sprite('left-door'), 'hall'],
-			'^' : [sprite('top-door'), 'wall', 'next-level'],
-			'$' : [sprite('stairs'), 'first-level'],
-			'*' : [sprite('slicer'), 'slicer', 'dangerous', {dir: -1}], //{} = direction
-			'}' : [sprite('skeletor'), solid(), 'skeletor', 'dangerous', {dir: -1, timer: -1}],
-			')' : [sprite('lanterns'), 'wall', 'not-done', solid()],
-			'(' : [sprite('firepot'), solid(), layer('ui')],
-			'_' : [sprite('bottom-door'), solid(), 'wall'],
+			'%' : [sprite('left-door'), 'hall', solid()],
+			'*' : [sprite('slow'), 'slow', {dir: -1}], //{} = direction
+			'}' : [sprite('fast'), solid(), 'fast', {dir: -1, timer: -1}],
+			')' : [sprite('close-belt'), 'wall', 'not-done', solid()],
+			'(' : [sprite('open-belt'), solid(), layer('ui')],
+			'_' : [sprite('conveyor-belt'), solid(), 'wall'],
 			'p' : [sprite('worker'), solid(), 'worker'],
 			'q' : [sprite('worker-up'), solid(), 'worker'],
 			'o' : [sprite('cleaned'), solid(), 'cleaned'],
 			'g' : [sprite('guard'), solid(), 'guard'],
-			'k' : [sprite('kaboom'), 'kaboom', layer['top']],
+			'k' : [sprite('spray'), 'spray'],
+			']' : [sprite('open-belt-inv'), layer('top')],
+			'[' : [sprite('close-belt-inv'), 'not-done'],
+			
+
 		}
 
 		addLevel(maps[level], levelCfg)
 		// const theLevels = addLevel(maps[0], levelCfg)
 
-		add([sprite('bg'), layer('bkg')])
+		add([sprite('floor'), layer('bkg')])
 
 		
 		const musicTracks = [["game1"], ["game2"], ["game3"]]
@@ -245,7 +272,7 @@ scene('game',({ level, score, target, time }) => {
 		})
 
 		// PLAYER SUCCESSFULLY FITS COMPONANT
-		collides('kaboom', 'widget', (k,w) => {
+		collides('spray', 'widget', (k,w) => {
 			destroy(w)
 			destroy(k)
 			
@@ -261,7 +288,7 @@ scene('game',({ level, score, target, time }) => {
 
 			// show new replacement graphic for fitting widget
 			const obj = add([sprite('cleaned'), pos(240,384), 'cleaned'])
-			const overlay = add([sprite('kaboom'), pos(240,384), 'kaboom'])
+			const overlay = add([sprite('spray'), pos(240,384), 'spray'])
 			wait(0.3, () => {
 				destroy(overlay)
 			})
@@ -296,6 +323,15 @@ scene('game',({ level, score, target, time }) => {
 			scoreLabel.pos = player.pos.add(player.dir.scale(-48)) //tracks/sticks to player
 		  })
 		
+
+		// add([
+		// 	rect(500, 40),
+		// 	// outline(4),
+		// 	// area(),
+		// 	layer('ui'),
+		// 	color(127, 200, 255),
+		// ]);
+
 		// DAILY GOAL
 		add([
 			text('DAILY GOAL:'),
@@ -330,11 +366,67 @@ scene('game',({ level, score, target, time }) => {
 			},
 		])
 		
+		//this animates the clock countdown
 		actualTime.action(() => { /* action is called every frame */
 			actualTime.time -= dt() /* delta time since last frame */
 			const totalSeconds = actualTime.time
 			actualTime.text = totalSeconds.toFixed(0)
+
+			// secsDisplay.time += dt()
+			// secsDisplay.text = secsDisplay.time.toFixed(0)
+
+			// minsDisplay.time = secsDisplay.time / 60
+			// minsDisplay.text = minsDisplay.time.toFixed(0)
+
+			// hoursDisplay.time = secsDisplay.time / 360
+			// hoursDisplay.text = hoursDisplay.time.toFixed(0)
+
 		})
+
+
+		
+		// // STOLEN CODE FOR DISPLAY
+		// let totalSeconds = ACTUAL_TIME_LEFT //totalSeconds.toFixed(0) // ; 
+		// let hours = Math.floor(totalSeconds / 3600);
+		// totalSeconds %= 3600;
+		// let minutes = Math.floor(totalSeconds / 60);
+		// let seconds = totalSeconds % 60;
+		// // STOLEN CODE
+
+		// const hoursDisplay = add([
+		// 	text(hours),
+		// 	pos(350, 50),
+		// 	scale(2),
+		// 	layer('ui'),
+		// 	{
+		// 		time: hours,
+		// 	},
+		// ])
+
+		// const minsDisplay = add([
+		// 	text(minutes),
+		// 	pos(390, 50),
+		// 	scale(2),
+		// 	layer('ui'),
+		// 	{
+		// 		time: minutes,
+		// 	},
+		// ])
+
+		// const secsDisplay = add([
+		// 	text('0'),
+		// 	pos(430, 50),
+		// 	scale(2),
+		// 	layer('ui'),
+		// 	{
+		// 		time: seconds,
+		// 	},
+		// ])
+
+		
+		
+
+
 
 
 		/* ---------------- CONTROLS ---------------- */
@@ -363,15 +455,15 @@ scene('game',({ level, score, target, time }) => {
 			player.dir = vec2(0,1)
 		})
 
-		function spawnKaboom (p) {
-			const obj = add([sprite('kaboom'), pos(p), 'kaboom', scale(0.8)])
+		function spawnSpray (p) {
+			const obj = add([sprite('spray'), pos(p), 'spray', scale(0.8)])
 			wait(0.3, () => {
 				destroy(obj)
 			})
 		}
 
 		keyPress('space', () => {
-			spawnKaboom(player.pos.add(player.dir.scale(48)))
+			spawnSpray(player.pos.add(player.dir.scale(48)))
 			play("spray", () => {
 				volume(0.5)
 			})
@@ -380,41 +472,117 @@ scene('game',({ level, score, target, time }) => {
 		/* ---------------- WORKER INTERACTION ---------------- */
 		
 		const workerMessage = [
-			['I am so happy'], //0
-			['Work = meaning'], //1
-			['Unionise?!'], //2
-			['zzZ'], //3
-			['Best time ever!'], //4
-			["One day I'll be rich!"], //5
-			["I'm productive!"], //6
-			["Busy busy busy!"], //7
-			["Steve is my hero!"], //8
-			["I love job creators"], //9
-			["Work hard!"], //10
-			["I am disciplined"], //11
-			["Stay focused!"], //12
-			["You can achieve anything!"], //13
-			["I'm a hard worker!"], //14
-			["I'm my best self!"], //15
-			["YOLO!"], //16
+			["I am so happy"], 
+			["Work = meaning"], 
+			["Unionise?!"], 
+			["zzZ"], 
+			["Best time ever!"], 
+			["One day I'll be rich!"], 
+			["I'm productive!"], 
+			["Busy busy busy!"], 
+			["Steve is my hero!"], 
+			["I love job creators"], 
+			["Work hard!"], 
+			["I am disciplined"], 
+			["Stay focused!"], 
+			["You can achieve anything!"], 
+			["I'm a hard worker!"], 
+			["I'm my best self!"], 
+			["#YOLO!"], 
+			["Think +positive+!"], 
+			["I'm achieving my goals!"],
+			["I know a secret..."], 
+			["...a way to escape..."],
+			["This is MY journey"],  
+			["...beyond these walls"],
+			["Stay positive!"],
+			["Don't think negatively -"],
+			["Think positive +"],
+			["...a hidden code..."],
+			["...control beyond control"],
+			["Speed up?"],
+			["Slow down?"],
+			["...a different approach"],
+			["...a different way"],
+			["...a hidden power..."],
+			["...an alternative"],
+			["...stay positive, HAHA!"],
+			["...think positive!"],
+			["...think..."],
+			["...it's in your hands!"],
+			["...everything is in hand"],
+			// ["'-'"],
+			// ["'+'"],
+			["...master & slave"],
+			["...lord & serf"],
+			["...employer & employee"],
+			["There is no alternative :)"],
+			["I LOVE MY JOB!"],
+			["...fail..."],
+			["...failure..."],
+			["...lets shake things up..."],
+			["Luddite?!"],
+			["I have anxiety LOL!"],
+			["Clean my room?!"],
+			["Pratice mindfulness!"],
+			["...my eyes burn..."],
+			["...dizzy..."],
+			["Just do your work"],
+			["Stop talking to me"],
+			["...I had dreams..."],
+			["Working towards my dreams!"],
+			["I feel great!"],
+			["Subservient is my MO!"],
+			["...mindless..."],
+			["...I heard a rumour"],
+			["Can you hear music?!"],
+			["...the source of power"],
+			["...something beyond this"],
+			["...it's outside this room"],
+			["...think outside this box"],
+			["12 hours = 43200 seconds!"],
+			["Have you ever finished a shift?"],
+			["You're new here, right?"],
+			["...a hidden key!"],
+			["If only we could find it..."],
 		]
 
 		// mouse click = conversations
 		clicks('worker', () => {
 			const conversation = add([
-				text(workerMessage[parseInt(rand(16))]),
+				text(workerMessage[parseInt(rand(workerMessage.length))]),
 				scale(2),
 				pos(250,250),
 				origin('center'),
+				layer('ui'),
+				color(0,0,0),
+			])
+
+			const speechBubble = add([
+				rect(440,80),
+				pos(250,250),
+				origin('center'),
+				layer('top'),
+			])
+
+			const speechBubbleBg = add([
+				rect(460,100),
+				pos(250,250),
+				origin('center'),
+				color(0,0,0),
 			])
 
 			wait(1, () => {
 				destroy(conversation)
+				destroy(speechBubble)
+				destroy(speechBubbleBg)
+				
+				
 			})
 		})
 
 		// // space bar = conversations
-		// collides('kaboom', 'worker', (k) => {
+		// collides('spray', 'worker', (k) => {
 		// 	destroy(k)
 		// 	const conversation = add([
 		// 		text(workerMessage[parseInt(rand(6))]),
@@ -453,14 +621,20 @@ scene('game',({ level, score, target, time }) => {
 		/* ---------------- WIDGETS ---------------- */
 		
 		
-				//WIDGET SPAWNER
+		//WIDGET SPAWNER
 		function spawnWidgets () {
 			const obj = add([sprite('widget'), pos(0,385), 'widget'])
 			obj.action( () => {
 				obj.move(widgetSpeed,0)
 			})
-			// wait(23, () => {
-			// 	destroy(obj)
+
+			// const objTop = add([sprite('conveyor-belt-top'), pos(0,385), 'conveyor-belt-top'])
+			// objTop.action( () => {
+			// 	objTop.move(widgetSpeed,0)
+			// 	wait(1, () => {
+			// 	destroy(objTop)
+			// })
+			
 			// })
 		}
 
@@ -474,14 +648,18 @@ scene('game',({ level, score, target, time }) => {
 			})
 	 	}
 
-		if (level == 0) {
-			theMachineLoop() // starts the machines
-		}
+		// if (level == 0) {
+		// 	theMachineLoop() // starts the machines
+		// }
 		
+		
+		theMachineLoop() // starts the machines
+		
+
 		/* ----------------------- CHEATS! INTERACTIONS ------------------- */
 
 		 //SPEEDS UP MACHINE WITH INTERACTION
-		collides('kaboom', 'skeletor', (k) => {
+		collides('spray', 'fast', (k) => {
 			camShake(1)
 			wait(1, () => {
 				destroy(k)
@@ -493,12 +671,13 @@ scene('game',({ level, score, target, time }) => {
 			if (gapBetweenWidgets < 0.1) {
 				gapBetweenWidgets = 0.1
 			}
+
 			theMachineLoop()
 						
 		})
 
 		//SLOWS DOWN MACHINE WITH INTERACTION
-		collides('kaboom', 'slicer', (k) => {
+		collides('spray', 'slow', (k) => {
 			camShake(1)
 			wait(1, () => {
 				destroy(k)
@@ -551,7 +730,7 @@ scene('game',({ level, score, target, time }) => {
 		}
 
 		// // PLAYER PICKS UP WIDGET
-		// collides('firepot', 'kaboom', (k) => {
+		// collides('firepot', 'spray', (k) => {
 		// 	scoreLabel.text = 'got widget'
 		// })
 	
@@ -559,14 +738,32 @@ scene('game',({ level, score, target, time }) => {
 		collides('widget', 'not-done', (w) => {
 			camShake(10)
 			destroy(w)
-			const message = add([text('FAIL!'), pos(270, 390), scale(5)])
+			const message = add([
+				text('FAIL!'),
+				pos(395, 400),
+				scale(2),
+				rotate(30),
+				color(0,0,0),
+				layer('top'),
+				])
+
+			const failBubble = add([
+				rect(150,30),
+				pos(390, 390),
+				color(255,0,0),
+				// rotate(15),
+				])
+
+			wait(1, ()=> {
+				destroy(message)
+				destroy(failBubble)
+			})
+
 			scoreLabel.value--
 			scoreLabel.text = scoreLabel.value
 			dailyTarget.value++
 			dailyTarget.text = dailyTarget.value
-			wait(1, ()=> {
-				destroy(message)
-			})
+			
 			play("fail", () => {
 				volume(0.1)
 			})
