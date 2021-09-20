@@ -2,22 +2,46 @@
 * {
 	margin: 0;
 	padding: 0;
-}
-html {
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
-	/* background-position: center;
-	background-size: cover;
-	background-attachment: fixed;
-	position: relative; */
+	background-color: #b4eedd;
 }
 
-.game {
+body {
+	font-family: "Changa", sans-serif;
+}
+
+.sound {
+	color:#41b39a;
+}
+
+html,
+p,
+.instructions,
+.sound,
+.controls,
+.contact,
+.hidden {
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
 .instructions {
-	display: inline;
+	padding:0;
+}
+
+a {
+	color:#41b39a;
+	font-size:xx-large;
+}
+
+a:hover {
+	color:#54d1b6;
+}
+
+p {
+	font-size: small;
+}
+
+.hidden {
+	color: #b4eedd;
 }

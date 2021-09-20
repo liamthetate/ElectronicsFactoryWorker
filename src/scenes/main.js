@@ -456,7 +456,6 @@ scene('game',({ level, score, target, time }) => { // some redudnant values
 		["I'm achieving my goals!"],
 		["I know a secret..."], 
 		["...a way to escape..."],
-		["This is MY journey"],  
 		["...beyond these walls"],
 		["Stay positive!"],
 		["Don't think negatively -"],
@@ -466,7 +465,6 @@ scene('game',({ level, score, target, time }) => { // some redudnant values
 		["Slow down?"],
 		["...a different approach"],
 		["...a hidden power..."],
-		["...an alternative"],
 		["Stay positive? HAHA!"],
 		["...think positive!"],
 		["...it's in your hands!"],
@@ -485,9 +483,8 @@ scene('game',({ level, score, target, time }) => { // some redudnant values
 		["Just do your work"],
 		["Stop talking to me"],
 		["...I had dreams..."],
-		["Working towards my dreams!"],
 		["I feel great!"],
-		["Subservient is my M.O."],
+		["Subservient? Me?!"],
 		["...mindless..."],
 		["...I heard a rumour"],
 		["Can you hear music?!"],
@@ -506,6 +503,25 @@ scene('game',({ level, score, target, time }) => { // some redudnant values
 		["...break it to remake it!"],
 		["...when will this end?"],
 		["The key is to be positive+"],
+		["Key? Tried console.log?"],
+		["If only I had control..."],
+		["I hope this breaks..."],
+		["Wish this was faster"],
+		["I want to break something"],
+		["I will not be broken!"],
+		["Argh! Music never stops!"],
+		["When will this end?!?!"],
+		["What if this is forever?"],
+		["Anyone else feel stuck?"],
+		["The console?"],
+		["Inspect Inspect Inspect"],
+		["Inspect?!?!"],
+		["Secret code you say?"],
+		["What? Select All?"],
+		// ["Command + A for a hint!"],
+		["...hidden messages..."],
+		["An invisible message?"],
+		["...camouflaged?"],
 	]
 
 	// mouse click = conversations
@@ -540,27 +556,27 @@ scene('game',({ level, score, target, time }) => { // some redudnant values
 		})
 	})
 
-	/* ---------------- GUARD ---------------- */
-	const guard = add([
-		sprite('guard', 'guard'),
-		pos(80,240),
-		origin('center'),
-	])
+	// /* ---------------- GUARD ---------------- */
+	// const guard = add([
+	// 	sprite('guard', 'guard'),
+	// 	pos(80,240),
+	// 	origin('center'),
+	// ])
 
-	//stops guard walking through solid
-	guard.action(()=> {
-		guard.resolve() 
-	})
+	// //stops guard walking through solid
+	// guard.action(()=> {
+	// 	guard.resolve() 
+	// })
 
-	guard.action( () => {
-		wait(60, () => {
-			guard.move(0,10)
-		})
-	})
+	// guard.action( () => {
+	// 	wait(60, () => {
+	// 		guard.move(0,10)
+	// 	})
+	// })
 
-	collides('guard', 'worker', (s) => {
-		guard.move(0,-10)
-	})
+	// collides('guard', 'worker', (s) => {
+	// 	guard.move(0,-10)
+	// })
 	
 	/* ---------------- WIDGETS/MACHINE ---------------- */
 	//WIDGET SPAWNER
@@ -664,14 +680,14 @@ scene('game',({ level, score, target, time }) => { // some redudnant values
 		camShake(1)
 
 		const lockedBg = add([
-			rect(80,20),
-			pos(10,190),
+			rect(60,20),
+			pos(12,190),
 			color(255,255,255),
 		])
 
 		const lockedDoorMessage = add([
-			text('*locked*'),
-			pos(15,195),
+			text('LOCKED'),
+			pos(18,195),
 			color(0,0,0),
 		])
 
@@ -750,3 +766,5 @@ scene('bedtime', () => {
 })
 
 start('start', { level: 0, score: 0 })
+
+console.log('The KEY is on your KEYboard! \nTry pushing a "positive" or "negative" key and see what happens...')
