@@ -12,25 +12,13 @@ Very quickly this game gets very boring.
 
 The core gameplay mechanic is so simple that you want to quit and never come back. In other words: it’s THE WORLD’S GREATEST MEANINGLESS-LABOUR SIMULATOR! 
 
-Somewhat of a meta-experience, if you explore the controls you soon discover that there might be something else to do…
+Somewhat of a meta-experience, if you explore you soon discover that there might be something else to do… (See SPOILERS at the bottom of this page)
 
 I’m not sure if this is bad game or good art but I had fun making it :)
 
-NOTE: The game owes an obvious debt to Zelda but more importantly Ania Kubów/FreeCodeCamp. Following her tutorials (and repurposing the art assets) was essential to understanding how KaboomJS worked, as such some of her code was used and is detailed in the credits at the bottom of this document.
+NOTE: The game owes an obvious debt to Zelda but more importantly Ania Kubów/FreeCodeCamp. Following her tutorials (and repurposing the art assets) was essential to understanding how KaboomJS worked, as such some of her code was used and is detailed in the CREDITS at the bottom of this document.
 <br/>
 <br/>
-
-# A NOTE ABOUT THIS REPOSITORY
-
-To get this code to work on your end you will need a few things
-
-* [Phaser 3 Template](https://github.com/ourcade/phaser3-parcel-template.git)
-
-npm install kaboom
-npm run start // RUN YOUR OWN SERVER
-npm run build // TO MAKE A VERSION FOR THE WEB
-
-Production files will be placed in the dist folder. Then upload those files to a web server. 🎉
 
 # PRODUCT SHOT
 ![product](src/images/product-shot.png)
@@ -39,42 +27,32 @@ Production files will be placed in the dist folder. Then upload those files to a
 
 # UX
 
-????????????????????????????????????????????????????
-
 ## User Stories
 
 
 First Time Visitor Goals
 
->I want to quickly waste as much time as possible
+>I want to play a silly game!
 
->I want to navigate the site, effortlessly, to find content.
+>I want to understand the controls.
 
->I want to be assured that this is a trustworthy operation, I want access to others opinions/reviews and the social media feeds to see what others are saying.
+>I want to navigate the site, effortlessly.
 
 <br/>
 
 Returning Visitor Goals
 
->I've decided I want to support the podcast, so want that to be obvious how I do that.
+>I want to show a friend this dumb game!
 
->I want a quick way to get in contact with the hosts.
-
->I want to find social media links.
+>I want a quick way to get in contact with the creator.
 
 <br/>
 
 Frequent User Goals
 
->I want to search different topics/episodes I might not have listened to.
-
->I want to stay up-to-date about the podcast, website etc.
-
+> I have a serious procrastination problem.
 <br/>
 <br/>
-
-????????????????????????????????????????????????????
-
 
 ## Design
 <br/>
@@ -331,19 +309,22 @@ Desktop [View](src/images/lighthouse.png)
 ??????????????????????????????????????????????????????????????????????????????
 # DEPLOYMENT
 
-The site was deployed to GitHub pages by doing the following:
+To get this code to work on your end I used this dev template:
+
+* [Phaser 3 Template](https://github.com/ourcade/phaser3-parcel-template.git)
+
+Then in Visual Studio Code, open a zsh terminal and type:
+
+npm install kaboom
+npm run start // RUN YOUR OWN SERVER
+npm run build // TO MAKE A VERSION FOR THE WEB (Production files will be placed in the dist folder. Then upload those files to a web server.)
+
+I have deployed the website to my own ftp/website [here](http://liamtate.co.uk/efws/index.html) using Filezilla to transfer files. I am happy to supply a username & password so you can check the time and date stamp. (I'm hesitant to deploy it to github pages because I'd have to restructure my development folders then push to this repository and I'm concerned it'll break something this close to the deadline. All the deployed files can be found in the /dist folder. ).
+
+However, if I was going to deploy to GitHub pages this is how I would do it:
 
 * GitHub repository > 'Settings' tab > 'Pages' menu
 * Source drop-down menu > Select Master Branch > Click Save
-
-<br/>
-
-I also deployed the website to my own ftp/website [here](http://liamtate.co.uk/efws/index.html), by: 
-
-* 
-* Filezilla to transfer files
-??????????????????????????????????????????????????????????????????????????????
-
 <br/>
 
 To clone a repository via HTTPS you could just read [this handy guide](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository), or following along below:
@@ -421,6 +402,13 @@ Following [Ania Kubów/FreeCodeCamp](https://www.youtube.com/watch?v=4OaHB0JbJDI
 <br />
 
 ## Media: 
+
 * The music featured in the game is my own.
 
+# SPOILERS
 
+If you Edit > Select All on the webpage you'll find a message.
+On the webpage Right-click > 'Inspect / Inspect Element' > Console. You will find a further message.
+Got it yet? Hit the + and - keys for fun times!
+
+The idea, at least for me, is to free the workers by breaking or crashing the actual game by overwhelming the machine(s) #Luddite :D
