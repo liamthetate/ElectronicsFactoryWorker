@@ -1,11 +1,11 @@
-<html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
             name="description"
-            content="The ULTIMATE simulator experience! Work a 12 hour shift then sleep and then do it all over again! Have an existential crisis!"
+            content="The ultimate SIMULATOR experience! Work a real-time 12 hour shift, sleep and then do it all over again! Have an existential crisis!"
         />
 
 		<title>ELECTRONICS FACTORY WORKER: SIMULATOR!</title>
@@ -17,8 +17,6 @@
 		<!-- GOOGLE FONTS -->
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Changa:wght@100;400" rel="stylesheet" />
-		<!-- JQUERY
-		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 		<!-- CUSTOM CSS -->
         <link rel="stylesheet" href="style.css" type="text/css" />
 	</head>
@@ -59,11 +57,6 @@
 				<div class="row">
 					<div class="col-lg pt-2">
 						<p id="controls"></p>
-						<script>
-							function revealControls() {
-								var buttonToggle = document.getElementById("controls").innerHTML = "(Click back into the game window) </br> SPACE BAR = Inspect & clean device </br> ARROW KEYS = move </br> MOUSE CLICK = Worker chat";
-							}
-						</script>
 					</div>
 				</div>
 			</section>
@@ -71,19 +64,21 @@
 			<section class="contact">
 				<div class="row">
 					<div class="col-lg mb-4">
-						<a href="https://twitter.com/LiamTeaTate" target="_blank"><i class="fab fa-twitter"></i></a>
+						<a href="https://twitter.com/LiamTeaTate" target="_blank" alt="Twitter" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
 					</div>
 				</div>
 			</section>
-
-		
-
-
-
-			
 		</div>
 
-	
+		<script>
+			function revealControls() {
+				document.getElementById("controls").innerHTML = "(Click back into the game window) </br> SPACE BAR = Inspect & clean device </br> ARROW KEYS = move </br> MOUSE CLICK = Worker chat";
+			}
+
+			// for legacy browsers
+			const AudioContext = window.AudioContext || window.webkitAudioContext;
+			const audioContext = new AudioContext();
+		</script>
 		
 	</body>
 </html>
