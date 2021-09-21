@@ -1,10 +1,36 @@
 ![title](src/images/efws.png)
 
-The ultimate SIMULATOR experience! Work a real-time 12 hour shift, sleep and then do it all over again! Have an existential crisis! Live game: http://liamtate.co.uk/efws/
+Live game (Desktop Only): http://liamtate.co.uk/efws/
+
+"The ultimate SIMULATOR experience! Work a real-time 12 hour shift, sleep and then do it all over again! Have an existential crisis!"
 
 Inspired by contrasting experiences: the fun of being locked in too many (videogame) dungeon's as a kid, and the mass exploitation & meaninglessness inherent to Capitalism. LOL!
+
+# GAMEPLAY(?)
+
+Very quickly this game gets very boring.
+
+The core gameplay mechanic is so simple that you want to quit and never come back. In other words: it’s THE WORLD’S GREATEST MEANINGLESS-LABOUR SIMULATOR! 
+
+Somewhat of a meta-experience, if you explore the controls you soon discover that there might be something else to do…
+
+I’m not sure if this is bad game or good art but I had fun making it :)
+
+NOTE: The game owes an obvious debt to Zelda but more importantly Ania Kubów/FreeCodeCamp. Following her tutorials (and repurposing the art assets) was essential to understanding how KaboomJS worked, as such some of her code was used and is detailed in the credits at the bottom of this document.
 <br/>
 <br/>
+
+# A NOTE ABOUT THIS REPOSITORY
+
+To get this code to work on your end you will need a few things
+
+* [Phaser 3 Template](https://github.com/ourcade/phaser3-parcel-template.git)
+
+npm install kaboom
+npm run start // RUN YOUR OWN SERVER
+npm run build // TO MAKE A VERSION FOR THE WEB
+
+Production files will be placed in the dist folder. Then upload those files to a web server. 🎉
 
 # PRODUCT SHOT
 ![product](src/images/product-shot.png)
@@ -65,7 +91,7 @@ Typography
 <br/>
 
 Wireframes
-* Desktop - [title](src/images/wf1.png), [in-game](src/images/wf2.png), [in-game](src/images/wf3.png), [in-game](src/images/wf4.png), [in-game](src/images/wf5.png), [in-game](src/images/wf6.png), [in-game](src/images/wf7.png), [in-game](src/images/wf8.png), [in-game](src/images/wf9.png) 
+* Desktop - [Title Screen](src/images/wf1.png), [Main screen](src/images/wf2.png), [HUD fail example](src/images/wf3.png), [HUD success example](src/images/wf4.png), [Worker Interaction](src/images/wf5.png), [Tiolet Break](src/images/wf6.png), [Drag and Drop](src/images/wf7.png), [Swipe mechanic](src/images/wf8.png), [Swipe mechanic success](src/images/wf9.png) 
 <br/>
 <br/>
 
@@ -273,20 +299,23 @@ Device | OS | Browser
 -------|----|---------
 iPhone 8 | iOS 14 | Safari, Ghostery, Firefox 
 Macbook Pro | Big Sur | Safari, Firefox, Chrome, Brave
-
 <br/>
+
+
 
 ## Validator testing
 
-HTML: No errors were returned in my code passing through the W3C validator, however [it did not like the official Spotify iframe embeds]() but there isn't much I can do about that! 
+HTML: A few errors detected on the W3C validator but I'm outta time! :/
 
 CSS: No errors were found when passing through the Jigsaw W3C validator.
+
+JS: KaboomJS trips them all up so difficult to know!
 <br/>
 <br/>
 
 ## Lighthouse results
 
-Desktop [View]()
+Desktop [View](src/images/lighthouse.png)
 <br/>
 <br/>
 
@@ -300,21 +329,20 @@ Desktop [View]()
 
 
 ??????????????????????????????????????????????????????????????????????????????
-
 # DEPLOYMENT
 
 The site was deployed to GitHub pages by doing the following:
 
 * GitHub repository > 'Settings' tab > 'Pages' menu
 * Source drop-down menu > Select Master Branch > Click Save
-* The live link can be found [here](https://liamthetate.github.io/itsnotjustinyourhead/) 
 
 <br/>
 
-I also deployed the website to my own ftp/website [here](http://liamtate.co.uk/injiyh/index.html), by cloning: 
+I also deployed the website to my own ftp/website [here](http://liamtate.co.uk/efws/index.html), by: 
 
-* GitHub Repository > dropdown menu 'Code' 
-* 'Download ZIP' > open zip > Filezilla to transfer files
+* 
+* Filezilla to transfer files
+??????????????????????????????????????????????????????????????????????????????
 
 <br/>
 
@@ -344,63 +372,54 @@ To clone a repository to GitHub Desktop:
 <br/>
 <br/>
 
-
-??????????????????????????????????????????????????????????????????????????????????????
-
-
-
 # CREDITS
 
 ## Content: 
 
-The game owes an obvious debt to Zelda but more importantly [Ania Kubów/FreeCodeCamp](https://www.youtube.com/watch?v=4OaHB0JbJDI&t=187s). Following her tutorials was essential to understanding KaboomJS, as such some of her code was repurposed and is detailed below. 
-
-I also took some code from the tutorials on the KaboomJS [website](https://kaboomjs.com/).
+Following [Ania Kubów/FreeCodeCamp](https://www.youtube.com/watch?v=4OaHB0JbJDI&t=187s) tutorials was essential to understanding KaboomJS, as such some of her code was repurposed and is detailed below. I also took some code from the tutorials on the KaboomJS [website](https://kaboomjs.com/).
 
 * Code:
 
     - Character interacts with an object that triggers events and updates stats. The ('names') are my own but esstially this is her code:
 
 		collides('spray', 'widget', (k,w) => {
-            destroy(w)
-            destroy(k)
-		
-            scoreLabel.value++
-            scoreLabel.text = scoreLabel.value
+        destroy(w)
+        destroy(k)
+    
+        scoreLabel.value++
+        scoreLabel.text = scoreLabel.value
 
-            const obj = add([sprite('cleaned'), pos(240,384), 'cleaned'])
-            const overlay = add([sprite('spray'), pos(240,384), 'spray'])
+        const obj = add([sprite('cleaned'), pos(240,384), 'cleaned'])
+        const overlay = add([sprite('spray'), pos(240,384), 'spray'])
 
-            wait(0.3, () => {
-                destroy(overlay)
-            })
+        wait(0.3, () => {
+            destroy(overlay)
+        })
 
     - The code to have an object appear outside the character I repurposed for a permenant UI effect:
 
         player.action(() => {
-		    scoreLabel.pos = player.pos.add(player.dir.scale(-48)) //tracks/sticks to player
+        scoreLabel.pos = player.pos.add(player.dir.scale(-48)) //tracks/sticks to player
 	    })
 
     - The countdown clock was lifted from her Space Invaders tutorial:
 
         actualTime.action(() => { /* action is called every frame */
-            actualTime.time -= dt() /* delta time since last frame */
-            const totalSeconds = actualTime.time
-            actualTime.text = totalSeconds.toFixed(0)
+        actualTime.time -= dt() /* delta time since last frame */
+        const totalSeconds = actualTime.time
+        actualTime.text = totalSeconds.toFixed(0)
 
     - Strobing colour on 'press start' text: [Source](https://kaboomjs.com/demo#button)
 
         pressSpace.action(()=> {
-            const t = time() * 100;
-            pressSpace.color = rgb(
-                wave(10, 255, t),
-                wave(0, 255, t + 2),
-                wave(0, 255, t + 4),
+        const t = time() * 100;
+        pressSpace.color = rgb(
+        wave(10, 255, t),
+        wave(0, 255, t + 2),
+        wave(0, 255, t + 4),
 	    )})
-    
 <br />
 
-    
 ## Media: 
 * The music featured in the game is my own.
 

@@ -1,16 +1,15 @@
-/* ------------------------------------- global settings */
 * {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-	font-family: "Changa", sans-serif;
-	background-color: #b4eedd;
+    font-family: "Changa", sans-serif;
+    background-color: #b4eedd;
 }
 
 .sound {
-	color:#41b39a;
+    color: #41b39a;
 }
 
 html,
@@ -26,22 +25,22 @@ p,
 }
 
 .instructions {
-	padding:0;
+    padding: 0;
 }
 
 a {
-	color:#41b39a;
-	font-size:xx-large;
+    color: #41b39a;
+    font-size: xx-large;
 }
 
 a:hover {
-	color:#54d1b6;
+    color: #54d1b6;
 }
 
 p {
-	font-size: small;
+    font-size: small;
 }
 
 .hidden {
-	color: #b4eedd;
+    color: #b4eedd;
 }
