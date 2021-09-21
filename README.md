@@ -1,6 +1,7 @@
 ![title](src/images/efws.png)
 
 Live game (Desktop Only): http://liamtate.co.uk/efws/
+
 (Recommended browsers: Firefox / Brave / Chrome)
 
 # ABOUT
