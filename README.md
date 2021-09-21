@@ -1,6 +1,6 @@
 # ELECTRONICS FACTORY WORKER: SIMULATOR!
 
-![title](src/readme_images/images/efws.png)
+![title](src/images/efws.png)
 
 The ultimate SIMULATOR experience! Work a real-time 12 hour shift, sleep and then do it all over again! Have an existential crisis! Live game: http://liamtate.co.uk/efws/
 
@@ -9,7 +9,7 @@ Inspired by the contrasting experiences, the fun of being locked in too many (vi
 <br/>
 
 # PRODUCT SHOT
-![product](src/images/readme_images/product-shot.png)
+![product](src/images/product-shot.png)
 <br/>
 <br/>
 
@@ -57,7 +57,7 @@ Frequent User Goals
 
 Colour Scheme
 
-![reference] (src/readme-images/reference.jpg)
+![reference] (src/images/reference.jpg)
 
 * Heavily inspired by the above, the game uses a restricted colour palette to give the game some element of (oppressive?) uniformity.
 <br/>
@@ -67,7 +67,7 @@ Typography
 <br/>
 
 Wireframes
-* Desktop - [title](src/readme-images/wf1.png), [in-game](src/readme-images/wf2.png), [in-game](src/readme-images/wf3.png), [in-game](src/readme-images/wf4.png), [in-game](src/readme-images/wf5.png), [in-game](src/readme-images/wf6.png), [in-game](src/readme-images/wf7.png), [in-game](src/readme-images/wf8.png), [in-game](src/readme-images/wf9.png) 
+* Desktop - [title](src/images/wf1.png), [in-game](src/images/wf2.png), [in-game](src/images/wf3.png), [in-game](src/images/wf4.png), [in-game](src/images/wf5.png), [in-game](src/images/wf6.png), [in-game](src/images/wf7.png), [in-game](src/images/wf8.png), [in-game](src/images/wf9.png) 
 <br/>
 <br/>
 
@@ -111,22 +111,22 @@ The site is a single page design with an external link opening in a seperate win
 ??????????????????????????????????????????????????????????
 
 Desktop:
-![nav](assets/images/readme_images/nav_desktop.png)
+![nav]()
 The desktop navigation bar sticks to the top of the page throughout the users experience, this is particularly important as at any point they can push the call-to-action button, Support Us.
 
 Mobile:
-![nav](assets/images/readme_images/nav_mobile.png)
+![nav]()
 I didn't want the navigation to be hidden inside a 'burger' menu so choose to lose the 'title' and 'support us' button (and opt for a top banner instead) leaving space for the navigation names to be displayed.
 <br/>
 <br/>
 
 ## Landing page
 
-![landing page](assets/images/readme_images/home_desktop.png)
+![landing page]()
 Quite quickly you get a summary of what the podcast is about, a testimonial, a way to listen/subscribe and the option to support the podcast.
 
 - Listen & Subscribe:
-![landing page](assets/images/readme_images/modal.png)
+![landing page]()
 The button opens a Modal with podcast platform options, this keeps the main landing page clean and minimal. 
 <br/>
 <br/>
@@ -134,14 +134,14 @@ The button opens a Modal with podcast platform options, this keeps the main land
 
 ## Episodes
 
-![landing page](assets/images/readme_images/episodes_desktop.png)
+![landing page]()
 There are a few design decision going on here, so i'll go through them one by one:
 <br/>
 <br/>
 
 - **Patreon**
-![locked](assets/images/readme_images/patreon_locked.png)
-- The black box at the top is my attempt to recreate what one sees when browsing any given Patreon page, [locked content!](assets/images/readme_images/original_patreon_locked.png)
+![locked]()
+- The black box at the top is my attempt to recreate what one sees when browsing any given Patreon page, [locked content!]()
 
 - I've used a red small badge, using the Patreon brand colour, and listed various perks as a preview for what a user might read on the Patreon page. 
 
@@ -150,32 +150,32 @@ There are a few design decision going on here, so i'll go through them one by on
 <br/>
 
 - **Free episode**
-![free ep](assets/images/readme_images/free_episode.png)
+![free ep]()
 - This follows the same design format but whilst the locked content has a small red badge, this has a monochromatic badge informing the user that it's free. Hyperlinks have been differentiated from the main text with a black colour.
 <br/>
 <br/>
 
 - **Free playlist**
-![playlist](assets/images/readme_images/episode_playlist.png)
+![playlist]()
 - Placing the support button alongside the full list of free episodes is an attempt at reciprocity: 'here, have all this free content, it would be great if you could give something back in return' etc.
 - For continuity I would liked to have made the playlists border edges curved, whilst easy to do in Chrome Dev Tools, this required some Javascript code that was beyond my understanding (at this point in time).
 <br/>
 <br/>
 
 ## About
-![playlist](assets/images/readme_images/about.png)
+![playlist]()
 I've used the same heading font for their names to tie it to the podcasts title branding. I'd like to add more details to this in time but for now this is all the hosts supplied.
 <br/>
 <br/>
 
 ## Contact
-![playlist](assets/images/readme_images/contact.png)
+![playlist]()
 Fairly standard contact form lol. I didn't use the label tag but instead opted for placeholder text to do the job of communicating what each field was for.
 <br/>
 <br/>
 
 ## Footer
-![playlist](assets/images/readme_images/footer.png)
+![playlist]()
 The footer is sticky and displays throughout, the social media presence of the podcast is important for generating new listners and potential supporters, hence it is in a prominent place.
 <br/>
 <br/>
@@ -280,7 +280,7 @@ Macbook Pro | Big Sur | Safari, Firefox, Chrome, Brave
 
 ## Validator testing
 
-HTML: No errors were returned in my code passing through the W3C validator, however [it did not like the official Spotify iframe embeds](assets/images/readme_images/html_spotify.png) but there isn't much I can do about that! 
+HTML: No errors were returned in my code passing through the W3C validator, however [it did not like the official Spotify iframe embeds]() but there isn't much I can do about that! 
 
 CSS: No errors were found when passing through the Jigsaw W3C validator.
 <br/>
@@ -288,7 +288,7 @@ CSS: No errors were found when passing through the Jigsaw W3C validator.
 
 ## Lighthouse results
 
-Desktop [View](assets/images/readme_images/lh_desktop.png)
+Desktop [View]()
 <br/>
 <br/>
 
