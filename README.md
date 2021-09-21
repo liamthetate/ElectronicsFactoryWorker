@@ -197,7 +197,7 @@ The footer is sticky and displays throughout, the social media presence of the p
 
 >I want to play a silly game!
 
-Well it's silly but whether it fun...
+Well it's silly but whether it's fun...
 
 <br/>
 
@@ -255,7 +255,7 @@ SMALL:
 
 LARGE:
 
-* Animations! It's missing some of the joy
+* Animations! Animated characters and actions would lift the experience.
 
 * Tiolet break! As in the wireframes, the ability to go to the tiolet and cry, would make this extra joyful.
 <br/>
@@ -283,7 +283,7 @@ The fixed width nature of the game means that testing in browsers has been relat
     justify-content: center;
     align-items: center;
 
-KaboomJS has worked flawlessly across all the browsers I tested it on however the AudioContent issue address in 'Known Bugs' remains a problem to solve.
+KaboomJS has worked flawlessly across all the browsers I tested it on however the AudioContent issue addressed in 'Known Bugs' remains a problem to solve.
 
 
 ## Validator testing
@@ -305,25 +305,24 @@ Desktop [View](src/images/lighthouse.png)
 ## Known bugs
 
 1. Safari is a big one. Because of the AudioContent API, no sound will play at all! Chrome won't play the title music for the same reason but does work after that.
-
 <br/>
 <br/>
 
-
-??????????????????????????????????????????????????????????????????????????????
 # DEPLOYMENT
 
-To get this code to work on your end I used this dev template:
+To get this code to work on your machine I used this dev template:
 
 * [Phaser 3 Template](https://github.com/ourcade/phaser3-parcel-template.git)
 
 Then in Visual Studio Code, open a zsh terminal and type:
 
-npm install kaboom
-npm run start // RUN YOUR OWN SERVER
-npm run build // TO MAKE A VERSION FOR THE WEB (Production files will be placed in the dist folder. Then upload those files to a web server.)
+    npm install kaboom
 
-I have deployed the website to my own ftp/website [here](http://liamtate.co.uk/efws/index.html) using Filezilla to transfer files. I am happy to supply a username & password so you can check the time and date stamp. (I'm hesitant to deploy it to github pages because I'd have to restructure my development folders then push to this repository and I'm concerned it'll break something this close to the deadline. All the deployed files can be found in the /dist folder. ).
+    npm run start // RUN YOUR OWN SERVER
+
+    npm run build // TO MAKE A VERSION FOR THE WEB (Production files will be placed in the dist folder. Then upload those files to a web server.)
+
+I have deployed the game to my own ftp/website [here](http://liamtate.co.uk/efws/index.html) using Filezilla to transfer files. I am happy to supply a username & password so you can check the time and date stamp. (I'm hesitant to deploy it to github pages because I'd have to restructure my development folders then push to this repository and I'm concerned it'll break something this close to the deadline. All the deployed files can be found in the /dist folder).
 
 However, if I was going to deploy to GitHub pages this is how I would do it:
 
@@ -359,32 +358,30 @@ To clone a repository to GitHub Desktop:
 
 # CREDITS
 
-## Content: 
+## Code: 
 
 Following [Ania Kubów/FreeCodeCamp](https://www.youtube.com/watch?v=4OaHB0JbJDI&t=187s) tutorials was essential to understanding KaboomJS, as such some of her code was repurposed and is detailed below. I also took some code from the tutorials on the KaboomJS [website](https://kaboomjs.com/).
-
-* Code:
 
     - Character interacts with an object that triggers events and updates stats. The ('names') are my own but esstially this is her code:
 
 		collides('spray', 'widget', (k,w) => {
-        destroy(w)
-        destroy(k)
-    
-        scoreLabel.value++
-        scoreLabel.text = scoreLabel.value
+            destroy(w)
+            destroy(k)
+        
+            scoreLabel.value++
+            scoreLabel.text = scoreLabel.value
 
-        const obj = add([sprite('cleaned'), pos(240,384), 'cleaned'])
-        const overlay = add([sprite('spray'), pos(240,384), 'spray'])
+            const obj = add([sprite('cleaned'), pos(240,384), 'cleaned'])
+            const overlay = add([sprite('spray'), pos(240,384), 'spray'])
 
-        wait(0.3, () => {
-            destroy(overlay)
+            wait(0.3, () => {
+                destroy(overlay)
         })
 
     - The code to have an object appear outside the character I repurposed for a permenant UI effect:
 
         player.action(() => {
-        scoreLabel.pos = player.pos.add(player.dir.scale(-48)) //tracks/sticks to player
+            scoreLabel.pos = player.pos.add(player.dir.scale(-48)) //tracks/sticks to player
 	    })
 
     - The countdown clock was lifted from her Space Invaders tutorial:
