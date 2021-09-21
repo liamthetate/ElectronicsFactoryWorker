@@ -1,6 +1,9 @@
 ![title](src/images/efws.png)
 
-Live game (Desktop Only - Firefox / Brave / Chrome): http://liamtate.co.uk/efws/
+Live game (Desktop Only): http://liamtate.co.uk/efws/
+(Recommended browsers: Firefox / Brave / Chrome)
+
+# ABOUT
 
 "The ultimate SIMULATOR experience! Work a real-time 12 hour shift, sleep and then do it all over again! Have an existential crisis!"
 
@@ -66,14 +69,14 @@ Typography
 <br/>
 
 Wireframes
-* [Title Screen](src/images/wf1.png),
-* [Main screen](src/images/wf2.png),
-* [HUD fail example](src/images/wf3.png),
-* [HUD success example](src/images/wf4.png),
-* [Worker Interaction](src/images/wf5.png),
-* [Tiolet Break](src/images/wf6.png),
-* [Drag and Drop](src/images/wf7.png),
-* [Swipe mechanic](src/images/wf8.png),
+* [Title Screen](src/images/wf1.png)
+* [Main screen](src/images/wf2.png)
+* [HUD fail example](src/images/wf3.png)
+* [HUD success example](src/images/wf4.png)
+* [Worker Interaction](src/images/wf5.png)
+* [Tiolet Break](src/images/wf6.png)
+* [Drag and Drop](src/images/wf7.png)
+* [Swipe mechanic](src/images/wf8.png)
 * [Swipe mechanic success](src/images/wf9.png) 
 <br/>
 <br/>
@@ -112,84 +115,40 @@ Wireframes
 <br/>
 <br/>
 
-# FEATURES
-
-## Navigation
-
-The site is a single page design with an external link opening in a seperate window/tab.
-
-??????????????????????????????????????????????????????????
-
-Desktop:
-![nav]()
-The desktop navigation bar sticks to the top of the page throughout the users experience, this is particularly important as at any point they can push the call-to-action button, Support Us.
-
-Mobile:
-![nav]()
-I didn't want the navigation to be hidden inside a 'burger' menu so choose to lose the 'title' and 'support us' button (and opt for a top banner instead) leaving space for the navigation names to be displayed.
-<br/>
-<br/>
+# FEATURES 
 
 ## Landing page
 
-![landing page]()
-Quite quickly you get a summary of what the podcast is about, a testimonial, a way to listen/subscribe and the option to support the podcast.
+![landing page](src/images/landing-page.png)
+Simple and straightfoward. Not cluttered and just focused on the game experience.
 
-- Listen & Subscribe:
-![landing page]()
-The button opens a Modal with podcast platform options, this keeps the main landing page clean and minimal. 
-<br/>
-<br/>
+## Top HUD
 
-## Episodes
+![top hud](src/images/top-hud.png)
+The 1600 is a reference to real targets that 'cleaners' have for iPhones. 
+A better display would have been Hour / Minutes / Seconds but I couldn't figure it out!
 
-![landing page]()
-There are a few design decision going on here, so i'll go through them one by one:
-<br/>
-<br/>
+## Player HUD
 
-- **Patreon**
-![locked]()
-- The black box at the top is my attempt to recreate what one sees when browsing any given Patreon page, [locked content!]()
+![player hud](src/images/player-hud.png)
+Oversized and overbearing, permenatly displayed above your head, a signifier of your value lol.
 
-- I've used a red small badge, using the Patreon brand colour, and listed various perks as a preview for what a user might read on the Patreon page. 
+## Spray
 
-- Given that there are already quite a few instances of the support button on the page, I decided not to put one below the bullet points and saved it to act as a book-end to the episode section. 
-<br/>
-<br/>
+![player hud](src/images/spray.png)
+A toxic chemical that makes the phones nice and shiny.
 
-- **Free episode**
-![free ep]()
-- This follows the same design format but whilst the locked content has a small red badge, this has a monochromatic badge informing the user that it's free. Hyperlinks have been differentiated from the main text with a black colour.
-<br/>
-<br/>
+## Fail!
 
-- **Free playlist**
-![playlist]()
-- Placing the support button alongside the full list of free episodes is an attempt at reciprocity: 'here, have all this free content, it would be great if you could give something back in return' etc.
-- For continuity I would liked to have made the playlists border edges curved, whilst easy to do in Chrome Dev Tools, this required some Javascript code that was beyond my understanding (at this point in time).
-<br/>
-<br/>
+![player hud](src/images/fail.png)
+If you don't do your one job properly, the machine will shake!
 
-## About
-![playlist]()
-I've used the same heading font for their names to tie it to the podcasts title branding. I'd like to add more details to this in time but for now this is all the hosts supplied.
-<br/>
-<br/>
+## Chat!
 
-## Contact
-![playlist]()
-Fairly standard contact form lol. I didn't use the label tag but instead opted for placeholder text to do the job of communicating what each field was for.
+![player hud](src/images/worker-chat.png)
+The only thing worth doing XD
 <br/>
 <br/>
-
-## Footer
-![playlist]()
-The footer is sticky and displays throughout, the social media presence of the podcast is important for generating new listners and potential supporters, hence it is in a prominent place.
-<br/>
-<br/>
-<br/>
-??????????????????????????????????????????????????????????????????
 
 # Testing User Stories from User Experience (UX) Section
 
@@ -257,7 +216,7 @@ LARGE:
 
 * Animations! Animated characters and actions would lift the experience.
 
-* Tiolet break! As in the wireframes, the ability to go to the tiolet and cry, would make this extra joyful.
+* Tiolet break! As in the wireframes, the ability to go to the tiolet and cry would make this extra joyful.
 <br/>
 <br/>
 
