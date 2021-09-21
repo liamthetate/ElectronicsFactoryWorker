@@ -1,10 +1,8 @@
-# ELECTRONICS FACTORY WORKER: SIMULATOR!
-
 ![title](src/images/efws.png)
 
 The ultimate SIMULATOR experience! Work a real-time 12 hour shift, sleep and then do it all over again! Have an existential crisis! Live game: http://liamtate.co.uk/efws/
 
-Inspired by the contrasting experiences, the fun of being locked in too many (videogame) dungeon's as a kid on one hand, and on the other, the mass exploitation & meaninglessness inherent to Capitalism. LOL!
+Inspired by contrasting experiences: the fun of being locked in too many (videogame) dungeon's as a kid, and the mass exploitation & meaninglessness inherent to Capitalism. LOL!
 <br/>
 <br/>
 
