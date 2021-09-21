@@ -121,32 +121,38 @@ Wireframes
 ## Landing page
 
 ![landing page](src/images/landing-page.png)
+<br/>
 Simple and straightfoward. Not cluttered and just focused on the game experience.
 
 ## Top HUD
 
 ![top hud](src/images/top-hud.png)
+<br/>
 The 1600 is a reference to real targets that 'cleaners' have for iPhones. 
 A better display would have been Hour / Minutes / Seconds but I couldn't figure it out!
 
 ## Player HUD
 
 ![player hud](src/images/player-hud.png)
+<br/>
 Oversized and overbearing, permenatly displayed above your head, a signifier of your value lol.
 
 ## Spray
 
 ![player hud](src/images/spray.png)
+<br/>
 A toxic chemical that makes the phones nice and shiny.
 
 ## Fail!
 
 ![player hud](src/images/fail.png)
+<br/>
 If you don't do your one job properly, the machine will shake!
 
 ## Chat!
 
 ![player hud](src/images/worker-chat.png)
+<br/>
 The only thing worth doing XD
 <br/>
 <br/>
