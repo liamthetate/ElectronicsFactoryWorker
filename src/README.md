@@ -377,15 +377,20 @@ I also took some code from the tutorials on the KaboomJS [website](https://kaboo
                 destroy(overlay)
             })
 
-    - Manipulating music speed: [Source](https://kaboomjs.com/demo#audio)
+    - The code to have an object appear outside the character I repurposed for a permenant UI effect:
 
-        Theres: 
-        keyPress("up", () => music.volume(music.volume() + 0.1));
+        player.action(() => {
+		    scoreLabel.pos = player.pos.add(player.dir.scale(-48)) //tracks/sticks to player
+	    })
 
-        Mine:
-        keyPress("", () => {titleMusic.speed(titleMusic.speed() + 0.05)})
+    - The countdown clock was lifted from her Space Invaders tutorial:
 
-    - Strobing colour on text: [Source](https://kaboomjs.com/demo#button)
+        actualTime.action(() => { /* action is called every frame */
+            actualTime.time -= dt() /* delta time since last frame */
+            const totalSeconds = actualTime.time
+            actualTime.text = totalSeconds.toFixed(0)
+
+    - Strobing colour on 'press start' text: [Source](https://kaboomjs.com/demo#button)
 
         pressSpace.action(()=> {
             const t = time() * 100;
