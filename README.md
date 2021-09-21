@@ -1,10 +1,12 @@
 ![title](src/images/efws.png)
 
-Live game (Desktop Only): http://liamtate.co.uk/efws/
+Live game (Desktop Only - Firefox / Brave / Chrome): http://liamtate.co.uk/efws/
 
 "The ultimate SIMULATOR experience! Work a real-time 12 hour shift, sleep and then do it all over again! Have an existential crisis!"
 
 Inspired by contrasting experiences: the fun of being locked in too many (videogame) dungeon's as a kid, and the mass exploitation & meaninglessness inherent to Capitalism. LOL!
+
+NOTE: The game owes an obvious debt to Zelda but more importantly Ania Kubów/FreeCodeCamp. Following her tutorials (and repurposing the art assets) was essential to understanding how KaboomJS worked, as such some of her code was used and is detailed in the CREDITS at the bottom of this document.
 
 # GAMEPLAY(?)
 
@@ -15,8 +17,6 @@ The core gameplay mechanic is so simple that you want to quit and never come bac
 Somewhat of a meta-experience, if you explore you soon discover that there might be something else to do… (See SPOILERS at the bottom of this page)
 
 I’m not sure if this is bad game or good art but I had fun making it :)
-
-NOTE: The game owes an obvious debt to Zelda but more importantly Ania Kubów/FreeCodeCamp. Following her tutorials (and repurposing the art assets) was essential to understanding how KaboomJS worked, as such some of her code was used and is detailed in the CREDITS at the bottom of this document.
 <br/>
 <br/>
 
@@ -28,7 +28,6 @@ NOTE: The game owes an obvious debt to Zelda but more importantly Ania Kubów/Fr
 # UX
 
 ## User Stories
-
 
 First Time Visitor Goals
 
@@ -46,6 +45,8 @@ Returning Visitor Goals
 
 >I want a quick way to get in contact with the creator.
 
+>I want to see what happens when I work the full 12 hour shift.
+
 <br/>
 
 Frequent User Goals
@@ -55,13 +56,9 @@ Frequent User Goals
 <br/>
 
 ## Design
-<br/>
 
 Colour Scheme
-
-![reference] (src/images/reference.jpg)
-
-* Heavily inspired by the above, the game uses a restricted colour palette to give the game some element of (oppressive?) uniformity.
+* Heavily inspired by [this](src/images/reference.jpg), the game uses a restricted colour palette to give the game some element of (oppressive?) uniformity.
 <br/>
 
 Typography
@@ -69,7 +66,15 @@ Typography
 <br/>
 
 Wireframes
-* Desktop - [Title Screen](src/images/wf1.png), [Main screen](src/images/wf2.png), [HUD fail example](src/images/wf3.png), [HUD success example](src/images/wf4.png), [Worker Interaction](src/images/wf5.png), [Tiolet Break](src/images/wf6.png), [Drag and Drop](src/images/wf7.png), [Swipe mechanic](src/images/wf8.png), [Swipe mechanic success](src/images/wf9.png) 
+* [Title Screen](src/images/wf1.png),
+* [Main screen](src/images/wf2.png),
+* [HUD fail example](src/images/wf3.png),
+* [HUD success example](src/images/wf4.png),
+* [Worker Interaction](src/images/wf5.png),
+* [Tiolet Break](src/images/wf6.png),
+* [Drag and Drop](src/images/wf7.png),
+* [Swipe mechanic](src/images/wf8.png),
+* [Swipe mechanic success](src/images/wf9.png) 
 <br/>
 <br/>
 
@@ -101,6 +106,9 @@ Wireframes
     
 8. [Web Formater](https://webformatter.com/):
     * To format my html, css code and Javascript.
+
+9. Dev template:
+    * [Phaser 3 Template](https://github.com/ourcade/phaser3-parcel-template.git) for VSC for development. 
 <br/>
 <br/>
 
@@ -132,7 +140,6 @@ Quite quickly you get a summary of what the podcast is about, a testimonial, a w
 The button opens a Modal with podcast platform options, this keeps the main landing page clean and minimal. 
 <br/>
 <br/>
-
 
 ## Episodes
 
@@ -182,66 +189,55 @@ The footer is sticky and displays throughout, the social media presence of the p
 <br/>
 <br/>
 <br/>
-
+??????????????????????????????????????????????????????????????????
 
 # Testing User Stories from User Experience (UX) Section
 
 ## First Time Visitor Goals:
 
->I want to quickly understand the sites purpose and to listen/subscribe.
+>I want to play a silly game!
 
-The header/hero sums up the site with easy access to listen. 
-
-<br/>
-
->I want to navigate the site, effortlessly, to find content.
-
-The single page design allows quick/intuitive use of the site.
+Well it's silly but whether it fun...
 
 <br/>
 
->I want to be assured that this is a trustworthy operation, I want access to others opinions/reviews and the social media feeds to see what others are saying.
+>I want to understand the controls.
 
-The five star review (and the Apple podcast site which includes many reviews) and the social media links are all one tap/click away.
+For those that don't like to figure things out, there is a button!
+
+<br/>
+
+>I want to navigate the site, effortlessly.
+
+You're in luck! It's so basic and straight forward!
 
 <br/>
 
 ## Returning Visitor Goals:
 
->I've decided I want to support the podcast, so want that to be obvious how I do that.
+>I want to show a friend this dumb game!
 
-The Patreon links are... everywhere!
-
-<br/>
-
->I want a quick way to get in contact with the hosts.
-
-The social media and the link to the contact form are displayed at all times.
+It's still dumb!
 
 <br/>
 
->I want to find social media links.
+>I want a quick way to get in contact with the creator.
 
-You're in luck! They never go away!
+The social media link is right there!
+
+>I want to see what happens when I work the full 12 hour shift.
+
+It's really disappointing and a waste of time. Meta.
 
 <br/>
 
 ## Frequent User Goals:
 
->I want to search different topics/episodes I might not have listened to.
+>I have a serious procrastination problem.
 
-Currently the user can scroll the embedded playlist but there is room for major improvement here.
-
-<br/>
-
->I want to stay up-to-date about the podcast, website etc.
-
-The social media links will do this but a newsletter might serve the user better.
-
+Maybe time is to be wasted?
 <br/>
 <br/>
-
-??????????????????????????????????????????????????????????
 
 # FUTURE EXPANSION
 
@@ -251,17 +247,17 @@ SMALL:
 
 * A Hour/Minutes/Seconds countdown for the shift timer.
 
-* Full touch-device compatibility
+* Full touch-device compatibility.
 
-* 'Controls?' button is a expand/contract toggle!
-
-* Animations!
+* 'Controls?' button is toggle that expands & contracts.
 
 * Less music? The game takes a while to load due to the quantity of tracks.
 
 LARGE:
 
-* Extra levels
+* Animations! It's missing some of the joy
+
+* Tiolet break! As in the wireframes, the ability to go to the tiolet and cry, would make this extra joyful.
 <br/>
 <br/>
 
@@ -279,6 +275,15 @@ iPhone 8 | iOS 14 | Safari, Ghostery, Firefox
 Macbook Pro | Big Sur | Safari, Firefox, Chrome, Brave
 <br/>
 
+iPhone 8 couldn't fit the whole game on the screen and was missing vital controls. But it's a desktop experience so...
+
+The fixed width nature of the game means that testing in browsers has been relatively straight forward, the main issue for desktop was keeping the game centered on the page. This was achieved with this css magic formula:
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+KaboomJS has worked flawlessly across all the browsers I tested it on however the AudioContent issue address in 'Known Bugs' remains a problem to solve.
 
 
 ## Validator testing
@@ -287,7 +292,7 @@ HTML: A few errors detected on the W3C validator but I'm outta time! :/
 
 CSS: No errors were found when passing through the Jigsaw W3C validator.
 
-JS: KaboomJS trips them all up so difficult to know!
+JS: KaboomJS trips 'Jshint' up on almost every line so difficult to know :/
 <br/>
 <br/>
 
@@ -301,7 +306,6 @@ Desktop [View](src/images/lighthouse.png)
 
 1. Safari is a big one. Because of the AudioContent API, no sound will play at all! Chrome won't play the title music for the same reason but does work after that.
 
-2. The game doesn't center very well on mobile, but given that this is a Desktop-only experience thats not a surprise! 
 <br/>
 <br/>
 
